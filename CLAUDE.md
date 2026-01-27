@@ -13,6 +13,7 @@ Single-page landing site for Crown Consulting Team, a consulting firm run by two
 - Netlify serverless function for OpenAI API calls (`/netlify/functions/chat.js`)
 - Netlify Forms for consultation requests
 - Google Workspace email (MX records preserved)
+- Google Analytics 4 (Measurement ID: G-LXXD13ZM2L)
 
 ## Key Design Decisions
 - **Apple-inspired aesthetic:** Dark theme (#0a0a0a), electric green accent (#39FF14), dramatic typography (Space Grotesk + Inter)
@@ -36,11 +37,38 @@ Single-page landing site for Crown Consulting Team, a consulting firm run by two
 - TXT: SPF record for Google Workspace (preserved)
 
 ## Files
-- `index.html` - Main page
-- `styles.css` - All styling
-- `main.js` - Interactions, modals, placeholder cycling
+- `index.html` - Main homepage
+- `styles.css` - All styling (including subpage styles)
+- `main.js` - Interactions, modals, placeholder cycling, search bar handling
 - `netlify/functions/chat.js` - OpenAI serverless function
 - `.env` - OpenAI API key (not committed)
+
+## SEO Landing Pages
+All SEO pages include: navigation bar, AI search bar, page content, CTA section, footer with site navigation, schema markup, and Google Analytics.
+
+**Certifications (`/certifications/`):**
+- `dbe-certification-california.html` - DBE certification help
+- `dvbe-certification-california.html` - DVBE (disabled veteran) certification
+- `sbe-certification-california.html` - Small business certification
+- `mbe-wbe-certification-california.html` - Minority/women-owned certification
+
+**Compliance (`/compliance/`):**
+- `pge-contractor-compliance.html` - PG&E contractor requirements
+- `cal-osha-tree-service-compliance.html` - Cal/OSHA for tree service
+- `california-iipp-requirements.html` - Injury & Illness Prevention Program
+- `vegetation-management-compliance.html` - Utility vegetation management
+
+**Bidding (`/bidding/`):**
+- `california-government-contracts-small-business.html` - Government contracting guide
+- `utility-contractor-bidding.html` - Utility contract bidding strategies
+
+**General (`/general/`):**
+- `contractor-compliance-consultant-california.html` - Overview of Crown's services
+
+## Site Navigation
+- Homepage footer has links to all SEO pages organized by category
+- All SEO pages have the same footer navigation
+- SEO pages have top nav bar with logo (links to homepage) and "Free Consultation" CTA
 
 ## Founders
 - **Tony Carlos, Esq.** - Utility line clearance operations, in-house counsel background
