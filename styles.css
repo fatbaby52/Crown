@@ -96,10 +96,10 @@ body {
   font-size: clamp(1rem, 2.5vw, 1.25rem);
   color: var(--color-text-muted);
   max-width: 600px;
-  margin: 0 auto 1rem;
+  margin: 3rem auto 1rem;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.8s var(--ease-out) 0.8s forwards;
+  animation: fadeInUp 0.8s var(--ease-out) 1.4s forwards;
 }
 
 .hero-credibility {
@@ -108,10 +108,10 @@ body {
   font-style: italic;
   font-weight: 400;
   max-width: 500px;
-  margin: 0 auto 3rem;
+  margin: 0 auto 2rem;
   opacity: 0;
   transform: translateY(20px);
-  animation: fadeInUp 0.8s var(--ease-out) 1s forwards;
+  animation: fadeInUp 0.8s var(--ease-out) 1.6s forwards;
 }
 
 /* Chat Input */
