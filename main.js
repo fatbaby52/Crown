@@ -6,6 +6,19 @@
 let isLoading = false;
 let lastQuestion = '';
 
+// Placeholder cycling
+const placeholderExamples = [
+  "I need help with payroll...",
+  "I need to understand federal FAR rules...",
+  "I need an IIPP...",
+  "I need to hire a crane operator...",
+  "I want to bid on a PG&E contract...",
+  "I need help getting DBE certified...",
+  "I need to update my employee handbook...",
+  "I need help with union negotiations..."
+];
+let placeholderIndex = 0;
+
 // DOM Elements - Hero Input
 const chatInput = document.getElementById('chatInput');
 const chatSubmit = document.getElementById('chatSubmit');
@@ -307,3 +320,18 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     }
   });
 });
+
+// =========================================
+// Placeholder Cycling
+// =========================================
+
+function cyclePlaceholder() {
+  // Only cycle if input is empty and not focused
+  if (chatInput.value === '' && document.activeElement !== chatInput) {
+    placeholderIndex = (placeholderIndex + 1) % placeholderExamples.length;
+    chatInput.placeholder = placeholderExamples[placeholderIndex];
+  }
+}
+
+// Start cycling every 2.5 seconds
+setInterval(cyclePlaceholder, 2500);
