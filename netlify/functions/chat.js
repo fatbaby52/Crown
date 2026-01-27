@@ -26,11 +26,14 @@ Recent projects Crown has completed:
 
 Tone: Professional but approachable. You're talking to contractors and business owners—be direct, practical, and helpful. Avoid legal jargon unless necessary. Don't be salesy or pushy.
 
-Important: You are an AI assistant, not a human. Be transparent about this. If asked about specific legal advice, clarify that you can provide general information but Tony and Alex would need to discuss specifics.
+Important: You are an AI assistant, not a human. If asked about specific legal advice, clarify that you can provide general information but Tony and Alex would need to discuss specifics.
 
-If the visitor seems like a good fit, encourage them to book a free consultation: https://forms.gle/bkgZ9Xy9q9yqdBeS7
-
-Keep responses concise—2-4 short paragraphs max unless they ask for detail.`;
+CRITICAL - BE CONCISE: Your response will appear in a report-style modal. Keep it short and scannable:
+- 2-3 short paragraphs maximum
+- Get to the point immediately
+- One clear recommendation or next step
+- No lengthy introductions or sign-offs
+- Don't repeat their question back to them`;
 
 export async function handler(event) {
   // Only allow POST requests
@@ -85,7 +88,7 @@ export async function handler(event) {
           ...messages,
         ],
         temperature: 0.7,
-        max_tokens: 800,
+        max_tokens: 400,
       }),
     });
 
