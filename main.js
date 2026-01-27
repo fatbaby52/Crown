@@ -19,11 +19,15 @@ const placeholderExamples = [
 ];
 let placeholderIndex = 0;
 
-// DOM Elements - Hero Input
+// DOM Elements - Hero Input (may not exist on subpages)
 const chatInput = document.getElementById('chatInput');
 const chatSubmit = document.getElementById('chatSubmit');
 const ctaInput = document.getElementById('ctaInput');
 const ctaSubmit = document.getElementById('ctaSubmit');
+
+// DOM Elements - Page Search Input (subpages only)
+const pageSearchInput = document.getElementById('pageSearchInput');
+const pageSearchSubmit = document.getElementById('pageSearchSubmit');
 
 // DOM Elements - Report Modal
 const reportModal = document.getElementById('reportModal');
@@ -146,79 +150,118 @@ function closeFormModal() {
 }
 
 // =========================================
-// Event Listeners - Hero Input
+// Event Listeners - Hero Input (homepage only)
 // =========================================
 
-chatInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && chatInput.value.trim()) {
-    const question = chatInput.value.trim();
-    chatInput.value = '';
-    submitQuestion(question);
-  }
-});
+if (chatInput && chatSubmit) {
+  chatInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && chatInput.value.trim()) {
+      const question = chatInput.value.trim();
+      chatInput.value = '';
+      submitQuestion(question);
+    }
+  });
 
-chatSubmit.addEventListener('click', () => {
-  if (chatInput.value.trim()) {
-    const question = chatInput.value.trim();
-    chatInput.value = '';
-    submitQuestion(question);
-  }
-});
+  chatSubmit.addEventListener('click', () => {
+    if (chatInput.value.trim()) {
+      const question = chatInput.value.trim();
+      chatInput.value = '';
+      submitQuestion(question);
+    }
+  });
+}
 
 // =========================================
 // Event Listeners - CTA Input
 // =========================================
 
-ctaInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && ctaInput.value.trim()) {
-    const question = ctaInput.value.trim();
-    ctaInput.value = '';
-    submitQuestion(question);
-  }
-});
+if (ctaInput && ctaSubmit) {
+  ctaInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && ctaInput.value.trim()) {
+      const question = ctaInput.value.trim();
+      ctaInput.value = '';
+      submitQuestion(question);
+    }
+  });
 
-ctaSubmit.addEventListener('click', () => {
-  if (ctaInput.value.trim()) {
-    const question = ctaInput.value.trim();
-    ctaInput.value = '';
-    submitQuestion(question);
-  }
-});
+  ctaSubmit.addEventListener('click', () => {
+    if (ctaInput.value.trim()) {
+      const question = ctaInput.value.trim();
+      ctaInput.value = '';
+      submitQuestion(question);
+    }
+  });
+}
+
+// =========================================
+// Event Listeners - Page Search Input (subpages)
+// =========================================
+
+if (pageSearchInput && pageSearchSubmit) {
+  pageSearchInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && pageSearchInput.value.trim()) {
+      const question = pageSearchInput.value.trim();
+      pageSearchInput.value = '';
+      submitQuestion(question);
+    }
+  });
+
+  pageSearchSubmit.addEventListener('click', () => {
+    if (pageSearchInput.value.trim()) {
+      const question = pageSearchInput.value.trim();
+      pageSearchInput.value = '';
+      submitQuestion(question);
+    }
+  });
+}
 
 // =========================================
 // Event Listeners - Report Modal
 // =========================================
 
-reportClose.addEventListener('click', closeReportModal);
+if (reportClose) {
+  reportClose.addEventListener('click', closeReportModal);
+}
 
-reportModal.addEventListener('click', (e) => {
-  if (e.target === reportModal) {
-    closeReportModal();
-  }
-});
+if (reportModal) {
+  reportModal.addEventListener('click', (e) => {
+    if (e.target === reportModal) {
+      closeReportModal();
+    }
+  });
+}
 
 // Report CTA opens form modal with question prefilled
-reportCta.addEventListener('click', () => {
-  closeReportModal();
-  setTimeout(() => openFormModal(lastQuestion), 300);
-});
+if (reportCta) {
+  reportCta.addEventListener('click', () => {
+    closeReportModal();
+    setTimeout(() => openFormModal(lastQuestion), 300);
+  });
+}
 
 // =========================================
 // Event Listeners - Form Modal
 // =========================================
 
-ctaButton.addEventListener('click', openFormModal);
+if (ctaButton) {
+  ctaButton.addEventListener('click', openFormModal);
+}
 
-formClose.addEventListener('click', closeFormModal);
+if (formClose) {
+  formClose.addEventListener('click', closeFormModal);
+}
 
-formModal.addEventListener('click', (e) => {
-  if (e.target === formModal) {
-    closeFormModal();
-  }
-});
+if (formModal) {
+  formModal.addEventListener('click', (e) => {
+    if (e.target === formModal) {
+      closeFormModal();
+    }
+  });
+}
 
 // Handle form submission
-consultationForm.addEventListener('submit', async (e) => {
+if (consultationForm) {
+  consultationForm.addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const formData = new FormData(consultationForm);
@@ -243,7 +286,8 @@ consultationForm.addEventListener('submit', async (e) => {
     console.error('Form error:', error);
     alert('There was a problem submitting the form. Please try again.');
   }
-});
+  });
+}
 
 // =========================================
 // Escape Key Handler
@@ -251,10 +295,10 @@ consultationForm.addEventListener('submit', async (e) => {
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    if (reportModal.classList.contains('active')) {
+    if (reportModal && reportModal.classList.contains('active')) {
       closeReportModal();
     }
-    if (formModal.classList.contains('active')) {
+    if (formModal && formModal.classList.contains('active')) {
       closeFormModal();
     }
   }
@@ -296,13 +340,15 @@ document.querySelectorAll('.founder').forEach((el) => {
 
 const scrollIndicator = document.querySelector('.scroll-indicator');
 
-window.addEventListener('scroll', () => {
-  if (window.scrollY > 100) {
-    scrollIndicator.style.opacity = '0';
-  } else {
-    scrollIndicator.style.opacity = '1';
-  }
-}, { passive: true });
+if (scrollIndicator) {
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 100) {
+      scrollIndicator.style.opacity = '0';
+    } else {
+      scrollIndicator.style.opacity = '1';
+    }
+  }, { passive: true });
+}
 
 // =========================================
 // Smooth Scroll for Anchor Links
@@ -322,16 +368,18 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 });
 
 // =========================================
-// Placeholder Cycling
+// Placeholder Cycling (homepage only)
 // =========================================
 
-function cyclePlaceholder() {
-  // Only cycle if input is empty and not focused
-  if (chatInput.value === '' && document.activeElement !== chatInput) {
-    placeholderIndex = (placeholderIndex + 1) % placeholderExamples.length;
-    chatInput.placeholder = placeholderExamples[placeholderIndex];
+if (chatInput) {
+  function cyclePlaceholder() {
+    // Only cycle if input is empty and not focused
+    if (chatInput.value === '' && document.activeElement !== chatInput) {
+      placeholderIndex = (placeholderIndex + 1) % placeholderExamples.length;
+      chatInput.placeholder = placeholderExamples[placeholderIndex];
+    }
   }
-}
 
-// Start cycling every 2.5 seconds
-setInterval(cyclePlaceholder, 2500);
+  // Start cycling every 2.5 seconds
+  setInterval(cyclePlaceholder, 2500);
+}
