@@ -4,6 +4,7 @@
 
 // State
 let isLoading = false;
+let lastQuestion = '';
 
 // DOM Elements - Hero Input
 const chatInput = document.getElementById('chatInput');
@@ -76,6 +77,7 @@ async function submitQuestion(question) {
   if (!question.trim() || isLoading) return;
 
   isLoading = true;
+  lastQuestion = question.trim();
   openReportModal();
 
   try {
@@ -108,13 +110,21 @@ async function submitQuestion(question) {
 // Form Modal Functions
 // =========================================
 
-function openFormModal() {
+function openFormModal(prefillMessage = '') {
   formModal.classList.add('active');
   document.body.style.overflow = 'hidden';
   // Reset form state
   consultationForm.classList.remove('hidden');
   formSuccess.classList.remove('show');
   consultationForm.reset();
+
+  // Prefill message if provided
+  if (prefillMessage) {
+    const messageField = document.getElementById('message');
+    if (messageField) {
+      messageField.value = prefillMessage;
+    }
+  }
 }
 
 function closeFormModal() {
@@ -174,10 +184,10 @@ reportModal.addEventListener('click', (e) => {
   }
 });
 
-// Report CTA opens form modal
+// Report CTA opens form modal with question prefilled
 reportCta.addEventListener('click', () => {
   closeReportModal();
-  setTimeout(openFormModal, 300);
+  setTimeout(() => openFormModal(lastQuestion), 300);
 });
 
 // =========================================
