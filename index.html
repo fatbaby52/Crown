@@ -25,19 +25,21 @@
 
       <div class="chat-input-container" id="chatInputContainer">
         <label class="chat-input-label" for="chatInput">What do you need help with?</label>
-        <input
-          type="text"
-          class="chat-input"
-          id="chatInput"
-          placeholder="I need help with payroll..."
-          autocomplete="off"
-        >
-        <button class="chat-submit" id="chatSubmit" aria-label="Send message">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
+        <div class="chat-input-wrapper">
+          <input
+            type="text"
+            class="chat-input"
+            id="chatInput"
+            placeholder="I need help with payroll..."
+            autocomplete="off"
+          >
+          <button class="chat-submit" id="chatSubmit" aria-label="Send message">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+            </svg>
+          </button>
+        </div>
       </div>
 
       <div class="scroll-indicator">
