@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crown Consulting Team</title>
+  <meta name="description" content="Crown Consulting Team helps California vegetation management contractors win bids, stay compliant, and leverage AI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <img src="Crown_Logo-removebg-preview.png" alt="Crown Consulting Team" class="hero-logo">
+
+      <h1 class="hero-headline">
+        <span class="line-1">Yes, we can do that.</span>
+        <span class="line-2">And so can you.</span>
+      </h1>
+      <p class="hero-subheadline">Crown Consulting Team helps California contractors punch above their weight. Win bids, stay compliant, and leverage AI without an enterprise budget.</p>
+      <p class="hero-credibility">Founded by two attorneys who've spent their careers in the contractor universe.</p>
+
+      <div class="chat-input-container" id="chatInputContainer">
+        <input
+          type="text"
+          class="chat-input"
+          id="chatInput"
+          placeholder="What do you need help with?"
+          autocomplete="off"
+        >
+        <button class="chat-submit" id="chatSubmit" aria-label="Send message">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>Scroll to see what we've done</span>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Chat Modal -->
+  <div class="chat-modal" id="chatModal">
+    <div class="chat-modal-content">
+      <button class="chat-close" id="chatClose" aria-label="Close chat">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-modal-input-container">
+        <input
+          type="text"
+          class="chat-modal-input"
+          id="chatModalInput"
+          placeholder="Type your message..."
+          autocomplete="off"
+        >
+        <button class="chat-modal-submit" id="chatModalSubmit" aria-label="Send message">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Consultation Form Modal -->
+  <div class="form-modal" id="formModal">
+    <div class="form-modal-content">
+      <button class="form-close" id="formClose" aria-label="Close form">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h2 class="form-title">Book a Free Consultation</h2>
+
+      <form name="consultation" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="consultationForm">
+        <input type="hidden" name="form-name" value="consultation">
+        <input name="bot-field" hidden>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone <span class="optional">(optional)</span></label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+
+        <div class="form-group">
+          <label for="message">What can we help you with?</label>
+          <textarea id="message" name="message" placeholder="Tell us about your project or challenge..." required></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">Send Message</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <p>Thanks—we'll be in touch soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Case Studies Section -->
+  <section class="case-studies">
+    <div class="case-study" data-animate>
+      <div class="case-content">
+        <span class="case-number">01</span>
+        <h2 class="case-title">Compliance AI</h2>
+        <p class="case-description">Built a system that lets contractors instantly update IIPPs and Employee Handbooks when regulations change—PG&E, Cal-OSHA, California employment law.</p>
+      </div>
+      <div class="case-visual compliance-visual">
+        <div class="doc-container">
+          <div class="doc-page">
+            <div class="doc-line"></div>
+            <div class="doc-line updating"></div>
+            <div class="doc-line"></div>
+            <div class="doc-line updating delay-1"></div>
+            <div class="doc-line"></div>
+            <div class="doc-line updating delay-2"></div>
+          </div>
+          <div class="reg-indicator">
+            <span class="reg-label"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-study" data-animate>
+      <div class="case-content">
+        <span class="case-number">02</span>
+        <h2 class="case-title">Certification Pipeline</h2>
+        <p class="case-description">Helped small contractors obtain SBE, DVBE, DBE certifications—opening doors to government contracts they couldn't access before.</p>
+      </div>
+      <div class="case-visual pipeline-visual">
+        <div class="pipeline">
+          <div class="pipeline-node">
+            <span>Apply</span>
+          </div>
+          <div class="pipeline-connector">
+            <div class="pipeline-pulse"></div>
+          </div>
+          <div class="pipeline-node">
+            <span>Review</span>
+          </div>
+          <div class="pipeline-connector">
+            <div class="pipeline-pulse delay-1"></div>
+          </div>
+          <div class="pipeline-node certified">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            <span>Certified</span>
+          </div>
+        </div>
+        <div class="cert-badges">
+          <span class="cert-badge">SBE</span>
+          <span class="cert-badge">DVBE</span>
+          <span class="cert-badge">DBE</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-study" data-animate>
+      <div class="case-content">
+        <span class="case-number">03</span>
+        <h2 class="case-title">Bid Intelligence</h2>
+        <p class="case-description">Created a decision engine for evaluating City, County, State, and Federal project opportunities—go or no-go in minutes, not hours.</p>
+      </div>
+      <div class="case-visual bid-visual">
+        <div class="bid-cards">
+          <div class="bid-card">
+            <div class="bid-card-header"></div>
+            <div class="bid-card-line"></div>
+            <div class="bid-card-line short"></div>
+            <div class="bid-status go">GO</div>
+          </div>
+          <div class="bid-card evaluating">
+            <div class="bid-card-header"></div>
+            <div class="bid-card-line"></div>
+            <div class="bid-card-line short"></div>
+            <div class="bid-status pending">...</div>
+          </div>
+          <div class="bid-card">
+            <div class="bid-card-header"></div>
+            <div class="bid-card-line"></div>
+            <div class="bid-card-line short"></div>
+            <div class="bid-status nogo">NO</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-study" data-animate>
+      <div class="case-content">
+        <span class="case-number">04</span>
+        <h2 class="case-title">Living Documents</h2>
+        <p class="case-description">Revised employee manuals to stay compliant with California's constantly evolving employment law—automatically.</p>
+      </div>
+      <div class="case-visual docs-visual">
+        <div class="docs-stack">
+          <div class="docs-page back-2"></div>
+          <div class="docs-page back-1"></div>
+          <div class="docs-page front">
+            <div class="docs-line"></div>
+            <div class="docs-line highlight"></div>
+            <div class="docs-line"></div>
+            <div class="docs-line"></div>
+            <div class="docs-line highlight"></div>
+            <div class="docs-timestamp">Updated just now</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Services Section -->
+  <section class="services" data-animate>
+    <div class="services-list">
+      <span class="service-item">Bidding</span>
+      <span class="service-divider"></span>
+      <span class="service-item">Compliance</span>
+      <span class="service-divider"></span>
+      <span class="service-item">Certifications</span>
+      <span class="service-divider"></span>
+      <span class="service-item">Union Relations</span>
+      <span class="service-divider"></span>
+      <span class="service-item">Risk Management</span>
+      <span class="service-divider"></span>
+      <span class="service-item">AI Implementation</span>
+    </div>
+  </section>
+
+  <!-- Founders Section -->
+  <section class="founders">
+    <div class="founder" data-animate>
+      <h3 class="founder-name">Tony Carlos, Esq.</h3>
+      <p class="founder-bio">Over a decade in utility line clearance—leading operations, serving as in-house counsel for some of California's largest companies in the industry. Tony knows the risks and realities of identifying and removing trees near power lines because he's lived it from the inside.</p>
+    </div>
+
+    <div class="founder" data-animate>
+      <h3 class="founder-name">Alex Craig, Esq.</h3>
+      <p class="founder-bio">Business development across three industries, most recently with Community Tree Service. Specializes in surfacing bids, securing certifications, negotiating contracts, and using analytics to drive decisions. If there's an opportunity, Alex finds it.</p>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" data-animate>
+    <h2 class="cta-headline">Ready to talk?</h2>
+    <button class="cta-button" id="ctaButton">Book a Free Consultation</button>
+    <p class="cta-alt">Or ask us anything right now.</p>
+    <div class="cta-input-container">
+      <input
+        type="text"
+        class="cta-input"
+        id="ctaInput"
+        placeholder="What do you need help with?"
+        autocomplete="off"
+      >
+      <button class="cta-submit" id="ctaSubmit" aria-label="Send message">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>Crown Consulting Team · <a href="mailto:contact@crownconsultingteam.com">contact@crownconsultingteam.com</a> · California</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
