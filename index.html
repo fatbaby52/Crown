@@ -38,40 +38,45 @@
           </svg>
         </button>
       </div>
-    </div>
 
-    <div class="scroll-indicator">
-      <span>Scroll to see what we've done</span>
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="6 9 12 15 18 9"></polyline>
-      </svg>
+      <div class="scroll-indicator">
+        <span>Scroll to see what we've done</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
     </div>
   </section>
 
-  <!-- Chat Modal -->
-  <div class="chat-modal" id="chatModal">
-    <div class="chat-modal-content">
-      <button class="chat-close" id="chatClose" aria-label="Close chat">
+  <!-- Report Modal -->
+  <div class="report-modal" id="reportModal">
+    <div class="report-modal-content">
+      <button class="report-close" id="reportClose" aria-label="Close report">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
-      <div class="chat-messages" id="chatMessages"></div>
-      <div class="chat-modal-input-container">
-        <input
-          type="text"
-          class="chat-modal-input"
-          id="chatModalInput"
-          placeholder="Type your message..."
-          autocomplete="off"
-        >
-        <button class="chat-modal-submit" id="chatModalSubmit" aria-label="Send message">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="22" y1="2" x2="11" y2="13"></line>
-            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-          </svg>
-        </button>
+
+      <div class="report-loading" id="reportLoading">
+        <div class="report-spinner"></div>
+        <p>Analyzing your question...</p>
+      </div>
+
+      <div class="report-result" id="reportResult">
+        <div class="report-section">
+          <span class="report-label">Your Issue</span>
+          <p class="report-issue" id="reportIssue"></p>
+        </div>
+
+        <div class="report-section">
+          <span class="report-label">Our Recommendation</span>
+          <div class="report-recommendation" id="reportRecommendation"></div>
+        </div>
+
+        <button class="report-cta" id="reportCta">Book a Free Initial Consultation</button>
+
+        <p class="report-disclaimer">This answer came from Crown's AI assistant. We're not sitting at the computer—we're out helping clients. <strong>Want this kind of AI working for your business?</strong> We can help you build it.</p>
       </div>
     </div>
   </div>
