@@ -62,6 +62,9 @@ All SEO pages include: navigation bar, AI search bar, page content, CTA section,
 - `california-government-contracts-small-business.html` - Government contracting guide
 - `utility-contractor-bidding.html` - Utility contract bidding strategies
 
+**Funding (`/funding/`):**
+- `usda-community-facilities-rural.html` - USDA Community Facilities loans/grants for rural California
+
 **General (`/general/`):**
 - `contractor-compliance-consultant-california.html` - Overview of Crown's services
 
