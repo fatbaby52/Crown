@@ -4,12 +4,13 @@
    ========================================= */
 
 :root {
-  --color-bg: #0a0a0a;
-  --color-text: #ffffff;
-  --color-text-muted: #888888;
-  --color-accent: #39FF14;
-  --color-surface: #111111;
-  --color-border: #222222;
+  --color-bg: #09090b;
+  --color-text: #fafafa;
+  --color-text-muted: #a1a1aa;
+  --color-accent: #3B82F6;
+  --color-accent-hover: #60A5FA;
+  --color-surface: #18181b;
+  --color-border: #27272a;
 
   --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
   --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -200,7 +201,7 @@ body.modal-open {
   font-size: 1.25rem;
   line-height: 1.4;
   background: var(--color-surface);
-  border: 2px solid rgba(57, 255, 20, 0.4);
+  border: 2px solid rgba(59, 130, 246, 0.4);
   border-radius: 20px;
   color: var(--color-text);
   caret-color: var(--color-accent);
@@ -223,19 +224,19 @@ body.modal-open {
 
 @keyframes subtlePulse {
   0%, 100% {
-    box-shadow: 0 0 0 0 rgba(57, 255, 20, 0), 0 0 10px rgba(57, 255, 20, 0.1);
+    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0), 0 0 10px rgba(59, 130, 246, 0.1);
   }
   50% {
-    box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.1), 0 0 20px rgba(57, 255, 20, 0.15);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1), 0 0 20px rgba(59, 130, 246, 0.15);
   }
 }
 
 @keyframes intensePulse {
   0%, 100% {
-    box-shadow: 0 0 0 4px rgba(57, 255, 20, 0.2), 0 0 30px rgba(57, 255, 20, 0.25);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2), 0 0 30px rgba(59, 130, 246, 0.25);
   }
   50% {
-    box-shadow: 0 0 0 6px rgba(57, 255, 20, 0.3), 0 0 40px rgba(57, 255, 20, 0.4);
+    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3), 0 0 40px rgba(59, 130, 246, 0.4);
   }
 }
 
@@ -263,7 +264,7 @@ body.modal-open {
 
 .chat-submit:hover {
   color: var(--color-accent);
-  background: rgba(57, 255, 20, 0.1);
+  background: rgba(59, 130, 246, 0.1);
 }
 
 .chat-submit:focus-visible {
@@ -469,13 +470,13 @@ body.modal-open {
 
 .report-cta:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
 }
 
 .report-cta:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
-  box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 25px rgba(59, 130, 246, 0.3);
 }
 
 .report-disclaimer {
@@ -605,7 +606,7 @@ body.modal-open {
 .form-group textarea:focus-visible {
   outline: none;
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.15);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
 }
 
 .form-group textarea {
@@ -645,13 +646,13 @@ body.modal-open {
 
 .form-submit:hover {
   transform: scale(1.02);
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 .form-submit:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 .form-success {
@@ -804,7 +805,7 @@ body.modal-open {
   }
   20% {
     background: var(--color-accent);
-    box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
   }
 }
 
@@ -848,7 +849,7 @@ body.modal-open {
 
 .pipeline-node.certified {
   border-color: var(--color-accent);
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.2);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
 }
 
 .pipeline-node.certified svg {
@@ -947,7 +948,7 @@ body.modal-open {
 }
 
 .bid-status.go {
-  background: rgba(57, 255, 20, 0.15);
+  background: rgba(59, 130, 246, 0.15);
   color: var(--color-accent);
 }
 
@@ -976,7 +977,7 @@ body.modal-open {
   }
   40% {
     border-color: var(--color-accent);
-    box-shadow: 0 0 15px rgba(57, 255, 20, 0.15);
+    box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
   }
 }
 
@@ -1189,13 +1190,13 @@ body.modal-open {
 
 .cta-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
 }
 
 .cta-button:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
-  box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
 }
 
 .cta-alt {
@@ -1228,7 +1229,7 @@ body.modal-open {
 .cta-input:focus,
 .cta-input:focus-visible {
   border-color: var(--color-accent);
-  box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.15);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
   outline: none;
 }
 
@@ -1533,13 +1534,13 @@ body.modal-open {
 
 .nav-links .nav-cta:hover {
   color: #000;
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 .nav-links .nav-cta:focus-visible {
   outline: 2px solid #000;
   outline-offset: 2px;
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
 }
 
 /* Page Search Section */
@@ -1572,7 +1573,7 @@ body.modal-open {
 .page-search .chat-input {
   animation: none;
   border: 2px solid var(--color-accent);
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+  box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
 }
 
 /* Page Content */
@@ -1693,7 +1694,7 @@ body.modal-open {
 
 .related-pages a:hover {
   border-color: var(--color-accent);
-  background: rgba(57, 255, 20, 0.05);
+  background: rgba(59, 130, 246, 0.05);
   opacity: 1;
 }
 
@@ -1816,12 +1817,12 @@ body.modal-open {
 
   .chat-input {
     animation: none;
-    box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.2);
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
   }
 
   .chat-input:focus-visible {
     animation: none;
-    box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.3);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
   }
 
   .scroll-indicator svg {
