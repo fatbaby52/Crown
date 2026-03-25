@@ -127,6 +127,7 @@ body.modal-open {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s var(--ease-out) forwards;
+  filter: hue-rotate(200deg) saturate(0.85);
 }
 
 .hero-headline {
@@ -1499,6 +1500,7 @@ body.modal-open {
 .nav-logo-img {
   height: 40px;
   width: auto;
+  filter: hue-rotate(200deg) saturate(0.85);
 }
 
 .nav-links {
