@@ -28,6 +28,13 @@
 html {
   font-size: 16px;
   scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed nav on subpages */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 body {
@@ -38,6 +45,58 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent layout shift when modal opens (scrollbar compensation) */
+body.modal-open {
+  overflow: hidden;
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+/* Skip Link */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-accent);
+  color: #000;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0 0 8px 8px;
+  font-family: var(--font-display);
+  font-weight: 500;
+  text-decoration: none;
+  z-index: 10000;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: none;
+}
+
+/* Visually Hidden (for screen readers only) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Global Focus Styles */
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* Remove default focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
 }
 
 /* =========================================
@@ -144,10 +203,15 @@ body {
   border: 2px solid rgba(57, 255, 20, 0.4);
   border-radius: 20px;
   color: var(--color-text);
-  caret-color: transparent;
-  outline: none;
+  caret-color: var(--color-accent);
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   animation: subtlePulse 3s ease-in-out infinite;
+}
+
+.chat-input:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  animation: intensePulse 1.5s ease-in-out infinite;
 }
 
 .chat-input::placeholder {
@@ -156,10 +220,6 @@ body {
   opacity: 0.7;
 }
 
-.chat-input:focus {
-  border-color: var(--color-accent);
-  animation: intensePulse 1.5s ease-in-out infinite;
-}
 
 @keyframes subtlePulse {
   0%, 100% {
@@ -204,6 +264,12 @@ body {
 .chat-submit:hover {
   color: var(--color-accent);
   background: rgba(57, 255, 20, 0.1);
+}
+
+.chat-submit:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  color: var(--color-accent);
 }
 
 /* Scroll Indicator */
@@ -288,6 +354,12 @@ body {
 .report-close:hover {
   color: var(--color-text);
   background: rgba(255, 255, 255, 0.1);
+}
+
+.report-close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  color: var(--color-text);
 }
 
 /* Loading State */
@@ -400,6 +472,12 @@ body {
   box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
 }
 
+.report-cta:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: 0 0 25px rgba(57, 255, 20, 0.3);
+}
+
 .report-disclaimer {
   font-size: 0.875rem;
   color: var(--color-text-muted);
@@ -475,6 +553,12 @@ body {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.form-close:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  color: var(--color-text);
+}
+
 .form-title {
   font-family: var(--font-display);
   font-size: 1.75rem;
@@ -517,6 +601,13 @@ body {
   border-color: var(--color-accent);
 }
 
+.form-group input:focus-visible,
+.form-group textarea:focus-visible {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.15);
+}
+
 .form-group textarea {
   min-height: 120px;
   resize: vertical;
@@ -524,6 +615,18 @@ body {
 
 .form-group textarea::placeholder {
   color: var(--color-text-muted);
+}
+
+.form-group input[aria-invalid="true"],
+.form-group textarea[aria-invalid="true"] {
+  border-color: #ff6464;
+}
+
+.field-error {
+  display: block;
+  color: #ff6464;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
 }
 
 .form-submit {
@@ -542,6 +645,12 @@ body {
 
 .form-submit:hover {
   transform: scale(1.02);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+}
+
+.form-submit:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
   box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
 }
 
@@ -970,6 +1079,9 @@ body {
   align-items: center;
   gap: 1rem 2rem;
   max-width: 1000px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 .service-item {
@@ -1080,6 +1192,12 @@ body {
   box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
 }
 
+.cta-button:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
+  box-shadow: 0 0 30px rgba(57, 255, 20, 0.4);
+}
+
 .cta-alt {
   margin-top: 3rem;
   margin-bottom: 1.5rem;
@@ -1107,9 +1225,11 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.cta-input:focus {
+.cta-input:focus,
+.cta-input:focus-visible {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.15);
+  outline: none;
 }
 
 .cta-submit {
@@ -1131,6 +1251,12 @@ body {
 }
 
 .cta-submit:hover {
+  color: var(--color-accent);
+}
+
+.cta-submit:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
   color: var(--color-accent);
 }
 
@@ -1192,6 +1318,11 @@ body {
 
 .footer a:hover {
   color: var(--color-accent);
+}
+
+.footer a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
 }
 
 /* =========================================
@@ -1387,6 +1518,11 @@ body {
   color: var(--color-text);
 }
 
+.nav-links a:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
 .nav-links .nav-cta {
   padding: 0.6rem 1.25rem;
   background: var(--color-accent);
@@ -1397,6 +1533,12 @@ body {
 
 .nav-links .nav-cta:hover {
   color: #000;
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
+}
+
+.nav-links .nav-cta:focus-visible {
+  outline: 2px solid #000;
+  outline-offset: 2px;
   box-shadow: 0 0 20px rgba(57, 255, 20, 0.3);
 }
 
@@ -1641,4 +1783,123 @@ body {
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
+}
+
+/* =========================================
+   Reduced Motion Support
+   ========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .hero-logo,
+  .hero-headline .line-1,
+  .hero-headline .line-2,
+  .hero-subheadline,
+  .hero-credibility,
+  .chat-input-container,
+  .scroll-indicator,
+  .case-study,
+  .services,
+  .founder,
+  .cta {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .chat-input {
+    animation: none;
+    box-shadow: 0 0 0 2px rgba(57, 255, 20, 0.2);
+  }
+
+  .chat-input:focus-visible {
+    animation: none;
+    box-shadow: 0 0 0 3px rgba(57, 255, 20, 0.3);
+  }
+
+  .scroll-indicator svg {
+    animation: none;
+  }
+
+  .report-spinner {
+    animation: none;
+    border-top-color: var(--color-accent);
+  }
+}
+
+/* =========================================
+   Touch Target Improvements
+   ========================================= */
+
+.footer-column a {
+  display: inline-block;
+  padding: 0.25rem 0;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.cert-badge {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* =========================================
+   Current Page Indicator
+   ========================================= */
+
+.footer-column a[aria-current="page"] {
+  color: var(--color-accent);
+  font-weight: 500;
+}
+
+/* =========================================
+   404 Error Page
+   ========================================= */
+
+.error-page {
+  min-height: calc(100vh - 200px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8rem 2rem 4rem;
+  text-align: center;
+}
+
+.error-content {
+  max-width: 500px;
+}
+
+.error-code {
+  font-family: var(--font-display);
+  font-size: clamp(6rem, 20vw, 12rem);
+  font-weight: 700;
+  color: var(--color-accent);
+  line-height: 1;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.8;
+}
+
+.error-headline {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  margin-bottom: 1rem;
+  letter-spacing: -0.02em;
+}
+
+.error-description {
+  font-size: 1.125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 2rem;
+  line-height: 1.6;
 }

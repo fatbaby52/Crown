@@ -21,7 +21,10 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to main content</a>
+
   <!-- Hero Section -->
+  <main id="main">
   <section class="hero" id="hero">
     <div class="hero-content">
       <img src="Crown_Logo-removebg-preview.png" alt="Crown Consulting Team" class="hero-logo">
@@ -63,8 +66,9 @@
   </section>
 
   <!-- Report Modal -->
-  <div class="report-modal" id="reportModal">
+  <div class="report-modal" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
     <div class="report-modal-content">
+      <h2 id="reportTitle" class="visually-hidden">AI Recommendation</h2>
       <button class="report-close" id="reportClose" aria-label="Close report">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -96,7 +100,7 @@
   </div>
 
   <!-- Consultation Form Modal -->
-  <div class="form-modal" id="formModal">
+  <div class="form-modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
     <div class="form-modal-content">
       <button class="form-close" id="formClose" aria-label="Close form">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -105,7 +109,7 @@
         </svg>
       </button>
 
-      <h2 class="form-title">Book a Free Consultation</h2>
+      <h2 class="form-title" id="formTitle">Book a Free Consultation</h2>
 
       <form name="consultation" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="consultationForm">
         <input type="hidden" name="form-name" value="consultation">
@@ -113,17 +117,17 @@
 
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" required autocomplete="name">
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" required autocomplete="email">
         </div>
 
         <div class="form-group">
           <label for="phone">Phone <span class="optional">(optional)</span></label>
-          <input type="tel" id="phone" name="phone">
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
         </div>
 
         <div class="form-group">
@@ -151,7 +155,7 @@
         <h2 class="case-title">Compliance AI</h2>
         <p class="case-description">Built a system that lets contractors instantly update IIPPs and Employee Handbooks when regulations change—PG&E, Cal-OSHA, California employment law.</p>
       </div>
-      <div class="case-visual compliance-visual">
+      <div class="case-visual compliance-visual" aria-hidden="true">
         <div class="doc-container">
           <div class="doc-page">
             <div class="doc-line"></div>
@@ -174,7 +178,7 @@
         <h2 class="case-title">Certification Pipeline</h2>
         <p class="case-description">Helped small contractors obtain SBE, DVBE, DBE certifications—opening doors to government contracts they couldn't access before.</p>
       </div>
-      <div class="case-visual pipeline-visual">
+      <div class="case-visual pipeline-visual" aria-hidden="true">
         <div class="pipeline">
           <div class="pipeline-node">
             <span>Apply</span>
@@ -209,7 +213,7 @@
         <h2 class="case-title">Bid Intelligence</h2>
         <p class="case-description">Created a decision engine for evaluating City, County, State, and Federal project opportunities—go or no-go in minutes, not hours.</p>
       </div>
-      <div class="case-visual bid-visual">
+      <div class="case-visual bid-visual" aria-hidden="true">
         <div class="bid-cards">
           <div class="bid-card">
             <div class="bid-card-header"></div>
@@ -239,7 +243,7 @@
         <h2 class="case-title">Living Documents</h2>
         <p class="case-description">Revised employee manuals to stay compliant with California's constantly evolving employment law—automatically.</p>
       </div>
-      <div class="case-visual docs-visual">
+      <div class="case-visual docs-visual" aria-hidden="true">
         <div class="docs-stack">
           <div class="docs-page back-2"></div>
           <div class="docs-page back-1"></div>
@@ -257,24 +261,26 @@
   </section>
 
   <!-- Services Section -->
-  <section class="services" data-animate>
-    <div class="services-list">
-      <span class="service-item">Bidding</span>
-      <span class="service-divider"></span>
-      <span class="service-item">Compliance</span>
-      <span class="service-divider"></span>
-      <span class="service-item">Certifications</span>
-      <span class="service-divider"></span>
-      <span class="service-item">Union Relations</span>
-      <span class="service-divider"></span>
-      <span class="service-item">Risk Management</span>
-      <span class="service-divider"></span>
-      <span class="service-item">AI Implementation</span>
-    </div>
+  <section class="services" data-animate aria-labelledby="services-heading">
+    <h2 id="services-heading" class="visually-hidden">Our Services</h2>
+    <ul class="services-list" role="list">
+      <li class="service-item">Bidding</li>
+      <li class="service-divider" aria-hidden="true"></li>
+      <li class="service-item">Compliance</li>
+      <li class="service-divider" aria-hidden="true"></li>
+      <li class="service-item">Certifications</li>
+      <li class="service-divider" aria-hidden="true"></li>
+      <li class="service-item">Union Relations</li>
+      <li class="service-divider" aria-hidden="true"></li>
+      <li class="service-item">Risk Management</li>
+      <li class="service-divider" aria-hidden="true"></li>
+      <li class="service-item">AI Implementation</li>
+    </ul>
   </section>
 
   <!-- Founders Section -->
-  <section class="founders">
+  <section class="founders" aria-labelledby="founders-heading">
+    <h2 id="founders-heading" class="visually-hidden">Our Founders</h2>
     <div class="founder" data-animate>
       <h3 class="founder-name">Tony Carlos, Esq.</h3>
       <p class="founder-bio">Over a decade in utility line clearance—leading operations, serving as in-house counsel for some of California's largest companies in the industry. Tony knows the risks and realities of identifying and removing trees near power lines because he's lived it from the inside.</p>
@@ -292,12 +298,14 @@
     <button class="cta-button" id="ctaButton">Book a Free Consultation</button>
     <p class="cta-alt">Or ask us anything right now.</p>
     <div class="cta-input-container">
+      <label for="ctaInput" class="visually-hidden">What do you need help with?</label>
       <input
         type="text"
         class="cta-input"
         id="ctaInput"
         placeholder="What do you need help with?"
         autocomplete="off"
+        aria-label="What do you need help with?"
       >
       <button class="cta-submit" id="ctaSubmit" aria-label="Send message">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -307,6 +315,7 @@
       </button>
     </div>
   </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">

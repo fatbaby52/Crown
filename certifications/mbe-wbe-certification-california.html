@@ -32,6 +32,7 @@
   </script>
 </head>
 <body>
+  <a href="#main" class="skip-link">Skip to main content</a>
   <!-- Navigation -->
   <nav class="page-nav">
     <a href="../index.html" class="nav-logo">
@@ -42,6 +43,7 @@
       <a href="#contact" class="nav-cta">Free Consultation</a>
     </div>
   </nav>
+  <main id="main">
 
   <!-- Search Bar Section -->
   <section class="page-search">
@@ -184,6 +186,7 @@
       </button>
     </div>
   </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
@@ -228,7 +231,7 @@
   </footer>
 
   <!-- Report Modal -->
-  <div class="report-modal" id="reportModal">
+  <div class="report-modal" id="reportModal" role="dialog" aria-modal="true" aria-labelledby="reportTitle">
     <div class="report-modal-content">
       <button class="report-close" id="reportClose" aria-label="Close report">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -236,6 +239,7 @@
           <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
       </button>
+      <h2 id="reportTitle" class="visually-hidden">AI Recommendation</h2>
 
       <div class="report-loading" id="reportLoading">
         <div class="report-spinner"></div>
@@ -261,7 +265,7 @@
   </div>
 
   <!-- Consultation Form Modal -->
-  <div class="form-modal" id="formModal">
+  <div class="form-modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
     <div class="form-modal-content">
       <button class="form-close" id="formClose" aria-label="Close form">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -270,7 +274,7 @@
         </svg>
       </button>
 
-      <h2 class="form-title">Book a Free Consultation</h2>
+      <h2 class="form-title" id="formTitle">Book a Free Consultation</h2>
 
       <form name="consultation" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="consultationForm">
         <input type="hidden" name="form-name" value="consultation">
@@ -278,17 +282,17 @@
 
         <div class="form-group">
           <label for="name">Name</label>
-          <input type="text" id="name" name="name" required>
+          <input type="text" id="name" name="name" autocomplete="name" required>
         </div>
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input type="email" id="email" name="email" required>
+          <input type="email" id="email" name="email" autocomplete="email" required>
         </div>
 
         <div class="form-group">
           <label for="phone">Phone <span class="optional">(optional)</span></label>
-          <input type="tel" id="phone" name="phone">
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
         </div>
 
         <div class="form-group">

@@ -5,6 +5,8 @@
 // State
 let isLoading = false;
 let lastQuestion = '';
+let lastFocusedElement = null;
+let placeholderInterval = null;
 
 // Placeholder cycling
 const placeholderExamples = [
@@ -46,20 +48,69 @@ const formSuccess = document.getElementById('formSuccess');
 const ctaButton = document.getElementById('ctaButton');
 
 // =========================================
+// Focus Trap Utility
+// =========================================
+
+function getFocusableElements(container) {
+  return container.querySelectorAll(
+    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+  );
+}
+
+function trapFocus(e, container) {
+  const focusableElements = getFocusableElements(container);
+  const firstElement = focusableElements[0];
+  const lastElement = focusableElements[focusableElements.length - 1];
+
+  if (e.key === 'Tab') {
+    if (e.shiftKey && document.activeElement === firstElement) {
+      e.preventDefault();
+      lastElement.focus();
+    } else if (!e.shiftKey && document.activeElement === lastElement) {
+      e.preventDefault();
+      firstElement.focus();
+    }
+  }
+}
+
+function getScrollbarWidth() {
+  return window.innerWidth - document.documentElement.clientWidth;
+}
+
+// =========================================
 // Report Modal Functions
 // =========================================
 
 function openReportModal() {
+  lastFocusedElement = document.activeElement;
+
+  // Prevent layout shift from scrollbar
+  const scrollbarWidth = getScrollbarWidth();
+  document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+  document.body.classList.add('modal-open');
+
   reportModal.classList.add('active');
-  document.body.style.overflow = 'hidden';
+
   // Show loading, hide result
   reportLoading.classList.remove('hidden');
   reportResult.classList.remove('show');
+
+  // Focus close button after animation
+  setTimeout(() => {
+    if (reportClose) reportClose.focus();
+  }, 100);
 }
 
 function closeReportModal() {
   reportModal.classList.remove('active');
-  document.body.style.overflow = '';
+  document.body.classList.remove('modal-open');
+  document.documentElement.style.setProperty('--scrollbar-width', '0px');
+
+  // Restore focus
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
+    lastFocusedElement = null;
+  }
 }
 
 function showReportResult(issue, recommendation) {
@@ -128,12 +179,20 @@ async function submitQuestion(question) {
 // =========================================
 
 function openFormModal(prefillMessage = '') {
+  lastFocusedElement = document.activeElement;
+
+  // Prevent layout shift from scrollbar
+  const scrollbarWidth = getScrollbarWidth();
+  document.documentElement.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+  document.body.classList.add('modal-open');
+
   formModal.classList.add('active');
-  document.body.style.overflow = 'hidden';
+
   // Reset form state
   consultationForm.classList.remove('hidden');
   formSuccess.classList.remove('show');
   consultationForm.reset();
+  clearFormErrors();
 
   // Prefill message if provided
   if (prefillMessage) {
@@ -142,11 +201,62 @@ function openFormModal(prefillMessage = '') {
       messageField.value = prefillMessage;
     }
   }
+
+  // Focus first input after animation
+  setTimeout(() => {
+    const nameField = document.getElementById('name');
+    if (nameField) nameField.focus();
+  }, 100);
 }
 
 function closeFormModal() {
   formModal.classList.remove('active');
-  document.body.style.overflow = '';
+  document.body.classList.remove('modal-open');
+  document.documentElement.style.setProperty('--scrollbar-width', '0px');
+
+  // Restore focus
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
+    lastFocusedElement = null;
+  }
+}
+
+// =========================================
+// Form Validation
+// =========================================
+
+function showFieldError(field, message) {
+  const formGroup = field.closest('.form-group');
+  if (!formGroup) return;
+
+  field.setAttribute('aria-invalid', 'true');
+
+  let errorEl = formGroup.querySelector('.field-error');
+  if (!errorEl) {
+    errorEl = document.createElement('span');
+    errorEl.className = 'field-error';
+    errorEl.setAttribute('role', 'alert');
+    formGroup.appendChild(errorEl);
+  }
+  errorEl.textContent = message;
+  field.setAttribute('aria-describedby', errorEl.id || '');
+}
+
+function clearFieldError(field) {
+  const formGroup = field.closest('.form-group');
+  if (!formGroup) return;
+
+  field.removeAttribute('aria-invalid');
+  field.removeAttribute('aria-describedby');
+
+  const errorEl = formGroup.querySelector('.field-error');
+  if (errorEl) errorEl.remove();
+}
+
+function clearFormErrors() {
+  if (!consultationForm) return;
+  const fields = consultationForm.querySelectorAll('input, textarea');
+  fields.forEach(clearFieldError);
 }
 
 // =========================================
@@ -229,6 +339,13 @@ if (reportModal) {
       closeReportModal();
     }
   });
+
+  // Focus trap for report modal
+  reportModal.addEventListener('keydown', (e) => {
+    if (reportModal.classList.contains('active')) {
+      trapFocus(e, reportModal.querySelector('.report-modal-content'));
+    }
+  });
 }
 
 // Report CTA opens form modal with question prefilled
@@ -257,35 +374,79 @@ if (formModal) {
       closeFormModal();
     }
   });
+
+  // Focus trap for form modal
+  formModal.addEventListener('keydown', (e) => {
+    if (formModal.classList.contains('active')) {
+      trapFocus(e, formModal.querySelector('.form-modal-content'));
+    }
+  });
 }
 
 // Handle form submission
 if (consultationForm) {
+  // Clear error on input
+  consultationForm.querySelectorAll('input, textarea').forEach(field => {
+    field.addEventListener('input', () => clearFieldError(field));
+  });
+
   consultationForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
+    e.preventDefault();
+    clearFormErrors();
 
-  const formData = new FormData(consultationForm);
+    // Validate required fields
+    const nameField = document.getElementById('name');
+    const emailField = document.getElementById('email');
+    const messageField = document.getElementById('message');
+    let isValid = true;
 
-  try {
-    const response = await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams(formData).toString(),
-    });
-
-    if (response.ok) {
-      consultationForm.classList.add('hidden');
-      formSuccess.classList.add('show');
-      setTimeout(() => {
-        closeFormModal();
-      }, 3000);
-    } else {
-      throw new Error('Form submission failed');
+    if (!nameField.value.trim()) {
+      showFieldError(nameField, 'Please enter your name');
+      isValid = false;
     }
-  } catch (error) {
-    console.error('Form error:', error);
-    alert('There was a problem submitting the form. Please try again.');
-  }
+
+    if (!emailField.value.trim()) {
+      showFieldError(emailField, 'Please enter your email');
+      isValid = false;
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailField.value)) {
+      showFieldError(emailField, 'Please enter a valid email address');
+      isValid = false;
+    }
+
+    if (!messageField.value.trim()) {
+      showFieldError(messageField, 'Please tell us how we can help');
+      isValid = false;
+    }
+
+    if (!isValid) {
+      // Focus first invalid field
+      const firstInvalid = consultationForm.querySelector('[aria-invalid="true"]');
+      if (firstInvalid) firstInvalid.focus();
+      return;
+    }
+
+    const formData = new FormData(consultationForm);
+
+    try {
+      const response = await fetch('/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams(formData).toString(),
+      });
+
+      if (response.ok) {
+        consultationForm.classList.add('hidden');
+        formSuccess.classList.add('show');
+        setTimeout(() => {
+          closeFormModal();
+        }, 3000);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Form error:', error);
+      showFieldError(messageField, 'There was a problem submitting the form. Please try again.');
+    }
   });
 }
 
@@ -380,6 +541,28 @@ if (chatInput) {
     }
   }
 
-  // Start cycling every 2.5 seconds
-  setInterval(cyclePlaceholder, 2500);
+  function startPlaceholderCycling() {
+    if (!placeholderInterval) {
+      placeholderInterval = setInterval(cyclePlaceholder, 2500);
+    }
+  }
+
+  function stopPlaceholderCycling() {
+    if (placeholderInterval) {
+      clearInterval(placeholderInterval);
+      placeholderInterval = null;
+    }
+  }
+
+  // Start cycling
+  startPlaceholderCycling();
+
+  // Pause when page is hidden
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopPlaceholderCycling();
+    } else {
+      startPlaceholderCycling();
+    }
+  });
 }
