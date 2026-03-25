@@ -127,7 +127,7 @@ body.modal-open {
   opacity: 0;
   transform: translateY(20px);
   animation: fadeInUp 0.8s var(--ease-out) forwards;
-  filter: hue-rotate(180deg) saturate(1.5) brightness(0.7);
+  filter: grayscale(1) brightness(2);
 }
 
 .hero-headline {
@@ -1500,7 +1500,7 @@ body.modal-open {
 .nav-logo-img {
   height: 40px;
   width: auto;
-  filter: hue-rotate(180deg) saturate(1.5) brightness(0.7);
+  filter: grayscale(1) brightness(2);
 }
 
 .nav-links {
