@@ -1175,6 +1175,110 @@ body.modal-open {
 }
 
 /* =========================================
+   Reevaluation Urgency Banner (homepage)
+   ========================================= */
+
+.reeval-banner {
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
+}
+
+.reeval-banner.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reeval-banner-inner {
+  max-width: 900px;
+  width: 100%;
+  padding: 2.5rem 2.5rem;
+  background: color-mix(in oklch, var(--color-surface) 88%, var(--color-accent));
+  border: 1px solid var(--color-accent);
+  border-left: 4px solid var(--color-accent);
+  border-radius: 12px;
+}
+
+.reeval-banner-eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.85rem;
+}
+
+.reeval-banner-headline {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  margin: 0 0 0.85rem 0;
+  color: var(--color-text);
+}
+
+.reeval-banner-body {
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  margin: 0 0 1.5rem 0;
+  max-width: 650px;
+}
+
+.reeval-banner-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem 1.5rem;
+}
+
+.reeval-banner-cta {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.75rem 1.5rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.reeval-banner-cta:hover {
+  opacity: 0.9;
+}
+
+.reeval-banner-link {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.reeval-banner-link:hover {
+  opacity: 0.75;
+}
+
+@media (max-width: 768px) {
+  .reeval-banner {
+    padding: 3rem 1.25rem;
+  }
+  .reeval-banner-inner {
+    padding: 1.75rem;
+  }
+}
+
+/* =========================================
    Services Section
    ========================================= */
 
@@ -1774,6 +1878,203 @@ body.modal-open {
 
 .page-content a:hover {
   opacity: 0.8;
+}
+
+/* Page meta — last-updated stamp */
+.page-meta {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  margin-bottom: 1rem;
+}
+
+/* Callouts — boxed informational blocks inside .page-content */
+.page-content .callout {
+  margin: 2rem 0;
+  padding: 1.5rem 1.75rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 8px;
+}
+
+.page-content .callout > h3,
+.page-content .callout > h4 {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+}
+
+.page-content .callout p:last-child,
+.page-content .callout ul:last-child,
+.page-content .callout ol:last-child {
+  margin-bottom: 0;
+}
+
+.page-content .callout--urgent {
+  border-left-width: 4px;
+  background: color-mix(in oklch, var(--color-surface) 92%, var(--color-accent));
+}
+
+.page-content .callout--urgent > h3 {
+  color: var(--color-accent);
+}
+
+.page-content .callout--note {
+  border-left-color: var(--color-text-muted);
+}
+
+/* Inline CTA inside a callout */
+.callout-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+  padding: 0.6rem 1.1rem;
+  background: var(--color-accent);
+  color: var(--color-bg);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.callout-cta:hover {
+  opacity: 0.9;
+}
+
+.page-content .callout-cta {
+  color: var(--color-bg);
+}
+
+/* Checklist — used inside .page-content for package contents etc */
+.page-content ul.checklist {
+  list-style: none;
+  padding: 0;
+}
+
+.page-content ul.checklist li {
+  position: relative;
+  padding-left: 1.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.page-content ul.checklist li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55rem;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--color-accent);
+  border-radius: 3px;
+  background:
+    linear-gradient(45deg, transparent 45%, var(--color-accent) 46%, var(--color-accent) 55%, transparent 56%) no-repeat 4px 7px / 8px 2px,
+    linear-gradient(-45deg, transparent 45%, var(--color-accent) 46%, var(--color-accent) 55%, transparent 56%) no-repeat 6px 4px / 6px 2px;
+}
+
+/* Comparison table */
+.page-content .comparison-table {
+  margin: 2rem 0;
+  overflow-x: auto;
+}
+
+.page-content .comparison-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.page-content .comparison-table th,
+.page-content .comparison-table td {
+  padding: 0.85rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+
+.page-content .comparison-table thead th {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  border-bottom: 1.5px solid var(--color-accent);
+}
+
+.page-content .comparison-table tbody td:first-child {
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.page-content .comparison-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* FAQ */
+.page-content .faq {
+  margin: 2rem 0;
+}
+
+.page-content .faq-item {
+  padding: 1.25rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.page-content .faq-item:last-child {
+  border-bottom: none;
+}
+
+.page-content .faq-q {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0 0 0.5rem 0;
+}
+
+.page-content .faq-a {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+/* Disclaimer */
+.page-disclaimer {
+  margin: 4rem auto 0;
+  max-width: 800px;
+  padding: 1.25rem 2rem;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  font-style: italic;
+  border-top: 1px solid var(--color-border);
+}
+
+@media (max-width: 768px) {
+  .page-content .callout {
+    padding: 1.25rem;
+  }
+  .page-content .comparison-table {
+    font-size: 0.85rem;
+  }
+  .page-content .comparison-table th,
+  .page-content .comparison-table td {
+    padding: 0.65rem 0.75rem;
+  }
+  .page-disclaimer {
+    padding: 1rem 1.5rem;
+  }
 }
 
 /* Related Pages */
