@@ -1048,6 +1048,159 @@ body.modal-open {
   50% { opacity: 0.8; }
 }
 
+/* 05 - DVBE Visual */
+.dvbe-visual {
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.shield-stack {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shield-icon {
+  color: var(--color-border);
+}
+
+.shield-icon .shield-star {
+  color: var(--color-accent);
+  opacity: 0;
+  transform-origin: 50px 60px;
+  animation: shieldStarPop 4s infinite;
+}
+
+.shield-verified {
+  position: absolute;
+  bottom: -8px;
+  right: -16px;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  opacity: 0;
+  animation: shieldVerifiedPop 4s infinite;
+}
+
+@keyframes shieldStarPop {
+  0%, 25% { opacity: 0; transform: scale(0.6); }
+  40%, 100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shieldVerifiedPop {
+  0%, 55% { opacity: 0; transform: translateY(4px); }
+  70%, 100% { opacity: 1; transform: translateY(0); }
+}
+
+/* 06 - DBE Recertification Visual */
+.recert-visual {
+  flex-direction: column;
+  gap: 0.85rem;
+  align-items: stretch;
+  width: 260px;
+  margin: 0 auto;
+}
+
+.recert-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.recert-tab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.65rem 0.9rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  opacity: 0.4;
+  transition: opacity 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+  animation: recertTabFill 6s infinite;
+}
+
+.recert-tab[data-step="1"] { animation-delay: 0s; }
+.recert-tab[data-step="2"] { animation-delay: 1s; }
+.recert-tab[data-step="3"] { animation-delay: 2s; }
+
+.recert-tab-check {
+  color: var(--color-accent);
+  font-weight: 700;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: recertCheckShow 6s infinite;
+}
+
+.recert-tab[data-step="1"] .recert-tab-check { animation-delay: 0s; }
+.recert-tab[data-step="2"] .recert-tab-check { animation-delay: 1s; }
+.recert-tab[data-step="3"] .recert-tab-check { animation-delay: 2s; }
+
+.recert-status {
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.55rem 0.75rem;
+  background: color-mix(in oklch, var(--color-surface) 90%, var(--color-accent));
+  border: 1px solid var(--color-accent);
+  border-radius: 6px;
+  font-family: var(--font-display);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--color-accent);
+  opacity: 0;
+  animation: recertStatusShow 6s infinite;
+  animation-delay: 3s;
+}
+
+@keyframes recertTabFill {
+  0%, 5% {
+    opacity: 0.4;
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+  }
+  15%, 65% {
+    opacity: 1;
+    border-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  75%, 100% {
+    opacity: 0.4;
+    border-color: var(--color-border);
+    color: var(--color-text-muted);
+  }
+}
+
+@keyframes recertCheckShow {
+  0%, 10% { opacity: 0; }
+  20%, 65% { opacity: 1; }
+  75%, 100% { opacity: 0; }
+}
+
+@keyframes recertStatusShow {
+  0%, 5% { opacity: 0; transform: scale(0.95); }
+  15%, 45% { opacity: 1; transform: scale(1); }
+  55%, 100% { opacity: 0; transform: scale(0.95); }
+}
+
 /* =========================================
    Services Section
    ========================================= */
