@@ -47,7 +47,9 @@ Single-page landing site for Crown Consulting Team, a consulting firm run by two
 All SEO pages include: navigation bar, AI search bar, page content, CTA section, footer with site navigation, schema markup, and Google Analytics.
 
 **Certifications (`/certifications/`):**
-- `dbe-certification-california.html` - DBE certification help
+- `dbe-certification-california.html` - DBE certification help (primary SEO target: Caltrans, LA Metro, CUCP queries)
+- `california-dbe-reevaluation.html` - DBE reevaluation help under the 2025 USDOT Interim Final Rule (49 CFR § 26.111)
+- `dbe-personal-narrative-california.html` - Personal Narrative preparation help
 - `dvbe-certification-california.html` - DVBE (disabled veteran) certification
 - `sbe-certification-california.html` - Small business certification
 - `mbe-wbe-certification-california.html` - Minority/women-owned certification
@@ -67,6 +69,17 @@ All SEO pages include: navigation bar, AI search bar, page content, CTA section,
 
 **General (`/general/`):**
 - `contractor-compliance-consultant-california.html` - Overview of Crown's services
+
+**Industries (`/industries/`):** construction, janitorial, landscaping, electrical, solar, hvac, plumbing (all `*-contractor-california.html`)
+
+## SEO / LLM Infrastructure
+- `sitemap.xml` - All 22 pages, extensionless URLs (Netlify serves these; canonicals match)
+- `robots.txt` - Allows all crawlers, explicitly welcomes AI crawlers (GPTBot, ClaudeBot, PerplexityBot, etc.), points to sitemap
+- `llms.txt` - LLM-readable site summary with key facts (CUCP agencies, PNW cap, IFR) and page links
+- All pages have: canonical, Open Graph + Twitter card tags, JSON-LD
+- Homepage has ProfessionalService org schema (`@id: .../#organization`) with phone, email, founders
+- DBE pages have Service + BreadcrumbList JSON-LD; the DBE main page and Personal Narrative page also have FAQPage JSON-LD mirroring the visible FAQ sections (keep them in sync when editing FAQs)
+- DBE facts current as of June 2026: Oct 2025 USDOT Interim Final Rule, Personal Narrative required, PNW cap $2,047,000, CUCP certifiers include Caltrans, LA Metro, BART, SFMTA, SANDAG, AC Transit, Sacramento RTD, VTA, OCTA, LAWA
 
 ## Site Navigation
 - Homepage footer has links to all SEO pages organized by category
