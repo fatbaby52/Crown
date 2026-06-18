@@ -45,7 +45,7 @@ const formModal = document.getElementById('formModal');
 const formClose = document.getElementById('formClose');
 const consultationForm = document.getElementById('consultationForm');
 const formSuccess = document.getElementById('formSuccess');
-const ctaButton = document.getElementById('ctaButton');
+const consultationTriggers = document.querySelectorAll('[data-open-consultation]');
 
 // =========================================
 // Focus Trap Utility
@@ -360,9 +360,10 @@ if (reportCta) {
 // Event Listeners - Form Modal
 // =========================================
 
-if (ctaButton) {
-  ctaButton.addEventListener('click', openFormModal);
-}
+// All "Book a Free Consultation" triggers (nav, hero, bottom CTA) open the form
+consultationTriggers.forEach((trigger) => {
+  trigger.addEventListener('click', () => openFormModal());
+});
 
 if (formClose) {
   formClose.addEventListener('click', closeFormModal);
