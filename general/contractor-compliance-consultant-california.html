@@ -88,7 +88,7 @@
     <h2>What We Do</h2>
     <p>Crown Consulting helps small to mid-sized California contractors with three core areas:</p>
 
-    <p><strong>Certifications.</strong> SBE, DVBE, DBE, MBE, WBE—we handle the applications, documentation, and renewals so you can access contracts that require certified small businesses.</p>
+    <p><strong>Certifications.</strong> We handle <a href="../certifications/sbe-certification-california.html">SBE</a>, <a href="../certifications/dvbe-certification-california.html">DVBE</a>, <a href="../certifications/dbe-certification-california.html">DBE</a>, and <a href="../certifications/mbe-wbe-certification-california.html">MBE/WBE</a> applications, documentation, and renewals so you can access contracts that require certified small businesses. On the DBE side, we also support specialized roles—<a href="../certifications/dbe-labor-contractor-california.html">labor contractors</a>, <a href="../certifications/dbe-site-preparation-contractor-california.html">site preparation</a>, <a href="../certifications/dbe-highway-subcontractor-california.html">highway subcontractors</a>, and <a href="../certifications/dbe-utility-crews-california.html">utility crews</a>—and help firms through <a href="../certifications/california-dbe-reevaluation.html">DBE reevaluations</a> and <a href="../certifications/dbe-personal-narrative-california.html">Personal Narratives</a> under the 2025 federal rules.</p>
 
     <p><strong>Compliance.</strong> <a href="../compliance/cal-osha-tree-service-compliance.html">Cal/OSHA requirements</a>, utility-specific standards, <a href="../compliance/california-iipp-requirements.html">IIPPs</a>, safety programs, employment law compliance—we build programs that satisfy regulators and clients.</p>
 
@@ -120,7 +120,7 @@
     <h2>Common Engagements</h2>
     <p>Contractors typically come to us for:</p>
 
-    <p><strong>Certification projects.</strong> You need DBE certification to bid on a specific opportunity. You want DVBE status to access state contract preferences. We handle the application from start to finish.</p>
+    <p><strong>Certification projects.</strong> You need <a href="../certifications/dbe-certification-california.html">DBE certification</a> to bid on a specific opportunity. You want <a href="../certifications/dvbe-certification-california.html">DVBE status</a> to access state contract preferences. We handle the application from start to finish.</p>
 
     <p><strong>Compliance program development.</strong> Your utility client is requiring an upgraded safety program. Cal/OSHA cited you for IIPP deficiencies. We build or rebuild your compliance programs.</p>
 
@@ -152,6 +152,7 @@
         <li><a href="../certifications/sbe-certification-california.html">SBE Certification</a></li>
         <li><a href="../certifications/dbe-certification-california.html">DBE Certification</a></li>
         <li><a href="../certifications/california-dbe-reevaluation.html">DBE Reevaluation</a></li>
+        <li><a href="../certifications/dbe-personal-narrative-california.html">DBE Personal Narrative</a></li>
         <li><a href="../certifications/dvbe-certification-california.html">DVBE Certification</a></li>
         <li><a href="../certifications/mbe-wbe-certification-california.html">MBE/WBE Certification</a></li>
       </ul>
@@ -277,4 +278,53 @@
   </div>
 
   <!-- Consultation Form Modal -->
-  <div class="form
+  <div class="form-modal" id="formModal" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+    <div class="form-modal-content">
+      <button class="form-close" id="formClose" aria-label="Close form">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <h2 class="form-title" id="formTitle">Book a Free Consultation</h2>
+
+      <form name="consultation" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="consultationForm">
+        <input type="hidden" name="form-name" value="consultation">
+        <input name="bot-field" hidden>
+
+        <div class="form-group">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" autocomplete="name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone <span class="optional">(optional)</span></label>
+          <input type="tel" id="phone" name="phone" autocomplete="tel">
+        </div>
+
+        <div class="form-group">
+          <label for="message">What can we help you with?</label>
+          <textarea id="message" name="message" placeholder="Tell us about your project or challenge..." required></textarea>
+        </div>
+
+        <button type="submit" class="form-submit">Send Message</button>
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+        <p>Thanks—we'll be in touch soon.</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="../main.js"></script>
+</body>
+</html>
