@@ -3,7 +3,33 @@
     "allow": [
       "Bash(git add:*)",
       "Bash(git push:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "PowerShell(git -C .claude/worktrees/reverent-darwin-cea57f log --oneline -5)",
+      "PowerShell(git -C .claude/worktrees/reverent-darwin-cea57f status --short)",
+      "WebSearch",
+      "WebFetch(domain:crownconsultingteam.com)",
+      "PowerShell(Get-ChildItem -Recurse C:\\\\Users\\\\johna\\\\Desktop\\\\Frontline\\\\frontline-website\\\\app | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\('C:\\\\Users\\\\johna\\\\Desktop\\\\Frontline\\\\frontline-website\\\\',''\\) }; echo '---PUBLIC---'; Get-ChildItem C:\\\\Users\\\\johna\\\\Desktop\\\\Frontline\\\\frontline-website\\\\public | Select-Object Name; echo '---NETLIFY---'; Get-Content C:\\\\Users\\\\johna\\\\Desktop\\\\Frontline\\\\frontline-website\\\\netlify.toml)",
+      "Bash(curl -s -o /dev/null -w 'status=%{http_code} content-type=%{content_type}\\\\n' -A \"Mozilla/5.0 \\(compatible; Googlebot/2.1; +http://www.google.com/bot.html\\)\" https://frontline.rentals/sitemap.xml)",
+      "Bash(curl -s -o /dev/null -w '%{http_code} -> %{redirect_url}\\\\n' https://www.frontline.rentals/sitemap.xml)",
+      "Bash(curl -s https://frontline.rentals/sitemap.xml)",
+      "Bash(curl -s https://frontline.rentals/robots.txt)",
+      "WebFetch(domain:www.sutter.courts.ca.gov)",
+      "WebFetch(domain:www.yuba.courts.ca.gov)",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' https://alexcraig.law/CLAUDE.md)",
+      "Bash(echo \"$\\(curl -s -o /dev/null -w '%{http_code}' https://alexcraig.law/CLAUDE.md\\) /CLAUDE.md \\(want 404\\)\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' https://alexcraig.law/llms.txt)",
+      "Bash(echo \"$\\(curl -s -o /dev/null -w '%{http_code}' https://alexcraig.law/llms.txt\\) /llms.txt\")",
+      "Bash(curl -s -o /dev/null -w '%{http_code}' https://alexcraig.law/)",
+      "Bash(echo \"$\\(curl -s -o /dev/null -w '%{http_code}' https://alexcraig.law/\\) homepage\")",
+      "PowerShell($key = [guid]::NewGuid\\(\\).ToString\\(\"N\"\\) + [guid]::NewGuid\\(\\).ToString\\(\"N\"\\); $key = $key.Substring\\(0,32\\); Write-Output $key)",
+      "Bash(xxd \"85adb61c21a346a6b221547c91a5ce41.txt\")",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code}\\\\n\" \"https://crownconsultingteam.com/85adb61c21a346a6b221547c91a5ce41.txt\")",
+      "Bash(curl -s \"https://crownconsultingteam.com/85adb61c21a346a6b221547c91a5ce41.txt\")",
+      "Bash(curl -s -o /dev/null -w \"IndexNow API response: HTTP %{http_code}\\\\n\" \"https://api.indexnow.org/indexnow?url=https://crownconsultingteam.com/&key=85adb61c21a346a6b221547c91a5ce41\")",
+      "Bash(node \"C:/Users/johna/AppData/Local/Temp/claude/C--Users-johna-Desktop-Crown/cbcd6b05-8dda-4c9f-86d6-0b4496c17b8c/scratchpad/indexnow-submit.mjs\")",
+      "Bash(python \"C:/Users/johna/AppData/Local/Temp/claude/C--Users-johna-Desktop-Crown/cbcd6b05-8dda-4c9f-86d6-0b4496c17b8c/scratchpad/read_gsc.py\")",
+      "Bash(python \"C:/Users/johna/AppData/Local/Temp/claude/C--Users-johna-Desktop-Crown/cbcd6b05-8dda-4c9f-86d6-0b4496c17b8c/scratchpad/agg_gsc.py\")",
+      "WebFetch(domain:ads.google.com)"
     ]
   }
 }
