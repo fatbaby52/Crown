@@ -368,7 +368,6 @@ body.modal-open {
 
 .chat-input::placeholder {
   color: var(--text-3);
-  font-style: italic;
 }
 
 .chat-submit {
@@ -504,7 +503,6 @@ body.modal-open {
 
 .hero-credibility {
   font-family: var(--font-display);
-  font-style: italic;
   font-size: 1rem;
   color: var(--text-2);
   max-width: 520px;
@@ -1693,7 +1691,6 @@ body.modal-open {
 }
 
 .service-item:nth-child(4n + 3) {
-  font-style: italic;
   color: var(--text);
 }
 
@@ -1747,7 +1744,6 @@ body.modal-open {
   top: -0.28em;
   right: -0.04em;
   font-family: var(--font-display);
-  font-style: italic;
   font-size: 9rem;
   font-weight: 500;
   line-height: 1;
@@ -1802,7 +1798,6 @@ body.modal-open {
   font-family: var(--font-display);
   font-size: clamp(2.75rem, 7vw, 5rem);
   font-weight: 500;
-  font-style: italic;
   letter-spacing: -0.025em;
   line-height: 1.02;
   margin-bottom: 2.75rem;
@@ -1887,7 +1882,6 @@ body.modal-open {
 
 .cta-input::placeholder {
   color: var(--text-3);
-  font-style: italic;
 }
 
 .cta-submit {
@@ -2034,7 +2028,6 @@ body.modal-open {
 .page-search-label {
   display: block;
   font-family: var(--font-display);
-  font-style: italic;
   font-size: clamp(1.3rem, 3vw, 1.7rem);
   font-weight: 400;
   margin-bottom: 1.5rem;
@@ -2327,7 +2320,6 @@ body.modal-open {
   font-size: 0.85rem;
   line-height: 1.6;
   color: var(--text-3);
-  font-style: italic;
   border-top: 1px solid var(--line);
 }
 
@@ -2419,7 +2411,6 @@ body.modal-open {
 
 .error-code {
   font-family: var(--font-display);
-  font-style: italic;
   font-size: clamp(6rem, 20vw, 12rem);
   font-weight: 500;
   line-height: 1;
