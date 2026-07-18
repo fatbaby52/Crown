@@ -2,6 +2,12 @@
 // Crown Consulting Team - Main JavaScript
 // =========================================
 
+// JS bootstrap: stamp the root element so CSS can gate
+// entrance/reveal hidden states on JavaScript actually running.
+// Without this class (JS disabled or main.js failed to load),
+// every section renders fully visible.
+document.documentElement.classList.add('js');
+
 // State
 let isLoading = false;
 let lastQuestion = '';
