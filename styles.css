@@ -67,6 +67,11 @@ body {
   background-color: var(--bg);
   color: var(--text);
   line-height: 1.65;
+  /* Pin Fraunces to its sturdier low-optical cut at all sizes; the auto
+     display cut (opsz 144) gets too calligraphic at headline scale.
+     Both properties inherit; fonts without an opsz axis ignore them. */
+  font-optical-sizing: none;
+  font-variation-settings: 'opsz' 30;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -294,7 +299,7 @@ body.modal-open {
 
 .hero-headline {
   font-family: var(--font-display);
-  font-weight: 500;
+  font-weight: 600;
   font-size: clamp(3rem, 8.5vw, 6.5rem);
   line-height: 1.02;
   letter-spacing: -0.025em;
@@ -308,8 +313,7 @@ body.modal-open {
 
 .hero-headline .line-2 {
   display: block;
-  font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   color: var(--green);
 }
 
@@ -323,7 +327,6 @@ body.modal-open {
 .chat-input-label {
   display: block;
   font-family: var(--font-display);
-  font-style: italic;
   font-size: 1.35rem;
   font-weight: 400;
   color: var(--text-2);
