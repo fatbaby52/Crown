@@ -1986,6 +1986,13 @@ body.modal-open {
   text-align: center;
 }
 
+.footer-legal {
+  max-width: 800px;
+  margin: 1rem auto 0;
+  line-height: 1.6;
+  text-align: center;
+}
+
 .footer a {
   color: var(--text-2);
   text-decoration: none;
