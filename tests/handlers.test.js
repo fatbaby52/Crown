@@ -412,3 +412,26 @@ test('staff: cross-site writes refused; config route is public and non-secret', 
   assert.equal(c.status, 200);
   assert.ok(!JSON.stringify(c.body).includes('service-key'));
 });
+
+test('describe: only the uploading session may describe its own received files; description saved on finalize', async () => {
+  reset();
+  const s = await verifiedSession();
+  const H = { cookie: s.cookie, 'x-csrf-token': s.csrf };
+  const g = parse(await portal.handler(ev('POST', 'grant', { filename: 'a.pdf', size: 10 }, H)));
+  const key = state.tables.portal_files.find((x) => x.id === g.body.fileId).object_key;
+  state.objects = [{ name: key.split('/').pop(), metadata: { size: 20 } }];
+  const origFetch = global.fetch;
+  global.fetch = async (url, opts) => (String(url).includes('/storage/v1/object/') ? { ok: true, status: 206, arrayBuffer: async () => Uint8Array.from(Buffer.from('%PDF-1.4 abc %%EOF')).buffer } : origFetch(url, opts));
+  let r = parse(await portal.handler(ev('POST', 'finalize', { fileId: g.body.fileId, description: '  2024 tax return\u0000 ' }, H)));
+  assert.equal(r.status, 200);
+  const row = state.tables.portal_files.find((x) => x.id === g.body.fileId);
+  assert.equal(row.description, '2024 tax return');
+  r = parse(await portal.handler(ev('POST', 'describe', { fileId: g.body.fileId, description: 'x'.repeat(400) }, H)));
+  assert.equal(r.status, 200);
+  assert.equal(row.description.length, 300);
+  const s2 = await verifiedSession();
+  r = parse(await portal.handler(ev('POST', 'describe', { fileId: g.body.fileId, description: 'hijack' }, { cookie: s2.cookie, 'x-csrf-token': s2.csrf })));
+  assert.equal(r.status, 404);
+  assert.notEqual(row.description, 'hijack');
+  global.fetch = origFetch;
+});

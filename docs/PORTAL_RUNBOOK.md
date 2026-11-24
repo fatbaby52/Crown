@@ -24,7 +24,7 @@ sender, storage, scanner, retention policy and access tests listed at the end.
 | Daily housekeeping | `netlify/functions/portal-cleanup.js` (scheduled `@daily` in `netlify.toml`) |
 | Shared helpers | `netlify/functions/lib/*` |
 | Database + bucket | Supabase project **BidFuel** (`aaeudtfmjuuowvkexrfh`), tables `portal_*`, bucket `client-uploads` |
-| Migrations | `supabase/migrations/0001_portal_schema.sql`, `0002_portal_templates.sql` (already applied to BidFuel) |
+| Migrations | `supabase/migrations/0001`–`0003` (all applied to BidFuel) |
 | Tests | `npm test` (Node built-in runner, no database needed) |
 
 The portal shares the BidFuel Supabase project by decision of Crown (Nov 2026).
@@ -39,7 +39,10 @@ service key (server side) can read, list or sign anything.
    The API refuses any token whose `aal` claim is not `aal2`, and any user not
    in `portal_staff` with `is_active = true`.
 2. Staff creates a **draft**: organization, purpose, recipient email,
-   instructions, checklist (start from a template, edit freely), expiry days.
+   free-text instructions (a template can prefill them), expiry days.
+   Decision 2026-11-24: clients are not shown a checklist; they upload any
+   files they choose and may add a short description to each (editable by
+   the uploader during that session; shown to staff in the file table).
 3. Staff clicks **Issue link**. The server generates a random token, stores
    only its SHA-256 hash, sets status `open`, and returns the link **once**.
    Staff copies it and sends it manually. Issuing again rotates the token and
@@ -178,8 +181,9 @@ After the first deploy, confirm in Netlify → Functions that `portal`, `staff`,
 
 ## 4. Day-to-day operations
 
-- **Create a request**: `/portal/` → New request → pick a template → edit the
-  checklist → Save draft → Issue link → copy → send to the recipient yourself.
+- **Create a request**: `/portal/` → New request → optionally pick an
+  instructions template → edit the text → Save draft → Issue link → copy →
+  send to the recipient yourself.
 - **Review uploads**: open the request; files show `scanning`, `cleared`,
   `scan failed`, `blocked (malware)` or `rejected: <reason>`. Download appears
   only on cleared files and opens a 60-second link.

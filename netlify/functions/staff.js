@@ -57,6 +57,7 @@ function fileView(f) {
   return {
     id: f.id,
     originalName: f.original_name,
+    description: f.description || '',
     extension: f.extension,
     size: f.actual_size != null ? Number(f.actual_size) : Number(f.declared_size),
     status: f.status,

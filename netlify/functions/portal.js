@@ -5,7 +5,8 @@
 //   POST verify-code  { token, code }      -> { ok, csrf, context }  (sets session cookie)
 //   GET  session                           -> { ok, context }
 //   POST grant        { filename, size, mime } -> { ok, fileId, upload }
-//   POST finalize     { fileId }           -> { ok, status, reason? }
+//   POST finalize     { fileId, description? } -> { ok, status, reason? }
+//   POST describe     { fileId, description }  -> { ok, description }
 //   POST batch-done                        -> { ok }
 //   POST logout                            -> { ok }
 //
@@ -23,6 +24,10 @@ const { sanitizeFilename, validateDeclaredFile, mimeForExtension, verifyStoredOb
 const COOKIE = 'crown_portal';
 const COOKIE_PATH = '/api/portal';
 const SNIFF_BYTES = 4096;
+
+function cleanDescription(v) {
+  return String(v == null ? '' : v).replace(/[\u0000-\u001f\u007f]/g, '').trim().slice(0, 300);
+}
 
 function maskEmail(email) {
   const [local, domain] = String(email).split('@');
@@ -303,13 +308,28 @@ async function handleFinalize(db, env, event, body) {
   }
 
   const { data: updated } = await db.from('portal_files')
-    .update({ status: 'pending_scan', actual_size: stat.size, detected_type: verdict.detected, uploaded_at: new Date().toISOString() })
+    .update({ status: 'pending_scan', actual_size: stat.size, detected_type: verdict.detected, uploaded_at: new Date().toISOString(), description: cleanDescription(body.description) || null })
     .eq('id', file.id).eq('status', 'reserved').select('id');
   if (!updated || updated.length === 0) return json(200, { ok: true, status: 'received' });
 
   await audit(db, { actorType: 'client', requestId: s.req.id, fileId: file.id, event: 'upload_received', detail: { bytes: stat.size, type: verdict.detected } });
   await triggerScan(env, file.id);
   return json(200, { ok: true, status: 'received' });
+}
+
+// Client adds or changes the optional description of a file it uploaded in
+// this session. Never touches the bytes, never allowed on other sessions' files.
+async function handleDescribe(db, env, event, body) {
+  const s = await loadSession(db, event);
+  if (!s) return json(401, { ok: false, error: 'Please verify your email again.' });
+  if (!csrfOk(event, s.session)) return json(403, { ok: false, error: 'Please reload the page and try again.' });
+  const fileId = String(body.fileId || '');
+  const { data: file } = await db.from('portal_files').select('id,status,session_id').eq('id', fileId).eq('request_id', s.req.id).maybeSingle();
+  if (!file || file.session_id !== s.session.id) return json(404, { ok: false, error: 'Unknown upload.' });
+  if (!['uploaded', 'pending_scan', 'clean', 'scan_failed'].includes(file.status)) return json(409, { ok: false, error: 'This file cannot be described.' });
+  const description = cleanDescription(body.description) || null;
+  await db.from('portal_files').update({ description }).eq('id', file.id);
+  return json(200, { ok: true, description: description || '' });
 }
 
 async function handleBatchDone(db, env, event) {
@@ -371,6 +391,7 @@ exports.handler = async function (event) {
       case 'verify-code': return await handleVerifyCode(db, env, event, body);
       case 'grant': return await handleGrant(db, env, event, body);
       case 'finalize': return await handleFinalize(db, env, event, body);
+      case 'describe': return await handleDescribe(db, env, event, body);
       case 'batch-done': return await handleBatchDone(db, env, event);
       case 'logout': return await handleLogout(db, env, event);
       default: return json(404, { ok: false });

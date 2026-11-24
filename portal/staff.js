@@ -178,43 +178,17 @@
   // ------------------------------------------------------------------
   var editingId = null;
 
-  function checklistToEditor(list) {
-    var ed = $('checklist-editor');
-    ed.innerHTML = '';
-    (list && list.length ? list : [{ group: '', items: [] }]).forEach(function (g) { addGroup(g); });
-  }
-  function addGroup(g) {
-    g = g || { group: '', items: [] };
-    var div = document.createElement('div');
-    div.className = 'checklist-group';
-    div.innerHTML = '<div class="staff-field"><input class="portal-input" placeholder="Group label (e.g. Ownership and governance)" data-group></div>' +
-      '<textarea class="portal-input" placeholder="One item per line — optional note after an em dash" data-items></textarea>' +
-      '<div style="margin-top:.5rem"><button type="button" class="portal-link" data-remove>Remove group</button></div>';
-    div.querySelector('[data-group]').value = g.group || '';
-    div.querySelector('[data-items]').value = (g.items || []).map(function (it) { return it.label + (it.note ? ' — ' + it.note : ''); }).join('\n');
-    div.querySelector('[data-remove]').addEventListener('click', function () { div.remove(); });
-    $('checklist-editor').appendChild(div);
-  }
-  function editorToChecklist() {
-    var out = [];
-    Array.prototype.forEach.call($('checklist-editor').querySelectorAll('.checklist-group'), function (div) {
-      var items = div.querySelector('[data-items]').value.split('\n').map(function (line) {
-        var parts = line.split(/\s+[—–-]{1,2}\s+/);
-        var label = (parts.shift() || '').trim();
-        return label ? { label: label, note: parts.join(' — ').trim() } : null;
-      }).filter(Boolean);
-      if (items.length) out.push({ group: div.querySelector('[data-group]').value.trim(), items: items });
-    });
-    return out;
-  }
-  $('btn-add-group').addEventListener('click', function () { addGroup(); });
-
   $('f-template').addEventListener('change', function () {
     var t = templates.filter(function (x) { return x.slug === $('f-template').value; })[0];
     if (!t) return;
     if (!$('f-purpose').value) $('f-purpose').value = t.purpose;
-    $('f-instructions').value = t.instructions;
-    checklistToEditor(t.checklist);
+    var lines = [t.instructions, ''];
+    (t.checklist || []).forEach(function (g) {
+      if (g.group) lines.push(g.group.toUpperCase());
+      (g.items || []).forEach(function (it) { lines.push('- ' + it.label + (it.note ? ' (' + it.note + ')' : '')); });
+      lines.push('');
+    });
+    $('f-instructions').value = lines.join('\n').trim();
   });
 
   function showForm(q) {
@@ -230,7 +204,6 @@
     $('f-expiry').value = 7;
     $('f-expiry').parentElement.hidden = !!q;
     $('f-instructions').value = q ? q.instructions : '';
-    checklistToEditor(q ? q.checklist : []);
     $('detail-empty').hidden = true;
     $('detail').hidden = true;
     $('form-request').hidden = false;
@@ -245,7 +218,7 @@
     e.preventDefault();
     var body = {
       orgName: $('f-org').value, purpose: $('f-purpose').value, recipientEmail: $('f-email').value,
-      instructions: $('f-instructions').value, checklist: editorToChecklist(), expiryDays: $('f-expiry').value,
+      instructions: $('f-instructions').value, expiryDays: $('f-expiry').value,
     };
     var p = editingId ? api('requests/' + editingId, { method: 'PATCH', body: body }) : api('requests', { method: 'POST', body: body });
     p.then(function (r) {
@@ -323,10 +296,11 @@
     (r.files || []).forEach(function (f) {
       var tr = document.createElement('tr');
       var statusLabel = { pending_scan: 'scanning', clean: f.serverScanned ? 'cleared' : 'released, not scanned', scan_failed: 'scan failed', infected: 'blocked (malware)', rejected: 'rejected' + (f.rejectionReason ? ': ' + f.rejectionReason : ''), deleted: 'deleted' }[f.status] || f.status;
-      tr.innerHTML = '<td class="name"></td><td>' + fmtBytes(f.size) + '</td><td>' + esc(fmtDate(f.uploadedAt)) + '</td>' +
+      tr.innerHTML = '<td class="name"></td><td class="desc"></td><td>' + fmtBytes(f.size) + '</td><td>' + esc(fmtDate(f.uploadedAt)) + '</td>' +
         '<td><span class="staff-pill ' + esc(f.status) + '">' + esc(statusLabel) + '</span></td><td class="staff-row"></td>';
       tr.querySelector('.name').textContent = f.originalName;
       tr.querySelector('.name').title = f.originalName;
+      tr.querySelector('.desc').textContent = f.description || '\u2014';
       var cell = tr.querySelector('.staff-row');
       function a(label, fn, cls) {
         var b = document.createElement('button');

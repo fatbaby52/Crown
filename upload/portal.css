@@ -202,6 +202,9 @@ textarea.portal-input { min-height: 110px; resize: vertical; line-height: 1.5; }
 .portal-file-bar > span { display: block; height: 100%; width: 0; background: var(--green); transition: width 0.2s linear; }
 .portal-file-actions { grid-column: 1 / -1; display: flex; gap: 0.75rem; }
 .portal-file-error { grid-column: 1 / -1; font-size: 0.82rem; color: #f3a596; }
+.portal-file-desc { grid-column: 1 / -1; display: flex; gap: 0.6rem; align-items: center; flex-wrap: wrap; margin-top: 0.25rem; }
+.portal-file-desc .portal-input-sm { flex: 1 1 240px; padding: 0.5rem 0.75rem; font-size: 0.9rem; }
+.portal-file-desc .portal-muted { margin: 0; }
 
 .portal-summary { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); }
 .portal-footer-actions { margin-top: 1.5rem; }

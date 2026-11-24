@@ -100,7 +100,7 @@
           <form id="form-request" hidden>
             <h2 id="form-title">New request</h2>
             <div class="staff-field">
-              <label class="portal-label" for="f-template">Start from template</label>
+              <label class="portal-label" for="f-template">Instructions template</label>
               <select id="f-template" class="portal-input"><option value="">Blank</option></select>
             </div>
             <div class="staff-field">
@@ -123,12 +123,7 @@
               <label class="portal-label" for="f-instructions">Instructions</label>
               <textarea id="f-instructions" class="portal-input" maxlength="4000"></textarea>
             </div>
-            <div class="staff-field">
-              <span class="portal-label">Checklist (one item per line; add “ — note” after an item for a hint)</span>
-              <div class="checklist-editor" id="checklist-editor"></div>
-              <div><button type="button" class="portal-link" id="btn-add-group">Add a group</button></div>
-            </div>
-            <p class="portal-muted">Review the checklist carefully before issuing the link. Templates are starting points, not approved final lists.</p>
+            <p class="portal-muted">Clients upload any files they choose and can add a short description to each. Use the instructions box to tell them what you need.</p>
             <div class="staff-row" style="margin-top:1rem">
               <button type="submit" class="cta-button portal-btn portal-btn-sm">Save draft</button>
               <button type="button" class="cta-button portal-btn portal-btn-sm portal-btn-secondary" id="btn-cancel-form">Cancel</button>
@@ -155,7 +150,7 @@
 
             <h2 style="margin-top:1.5rem">Files</h2>
             <table class="staff-table">
-              <thead><tr><th>Name</th><th>Size</th><th>Received</th><th>Status</th><th></th></tr></thead>
+              <thead><tr><th>Name</th><th>Description</th><th>Size</th><th>Received</th><th>Status</th><th></th></tr></thead>
               <tbody id="d-files"></tbody>
             </table>
             <p class="portal-muted" id="d-files-empty">No files received yet.</p>

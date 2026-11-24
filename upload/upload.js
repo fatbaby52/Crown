@@ -150,39 +150,12 @@
   // ---------------------------------------------------------------------
   // Upload view
   // ---------------------------------------------------------------------
-  function renderChecklist(list) {
-    var wrap = $('checklist');
-    wrap.innerHTML = '';
-    if (!list || !list.length) { $('checklist-wrap').hidden = true; return; }
-    $('checklist-wrap').hidden = false;
-    list.forEach(function (group) {
-      if (group.group) {
-        var h = document.createElement('h3');
-        h.textContent = group.group;
-        wrap.appendChild(h);
-      }
-      var ul = document.createElement('ul');
-      (group.items || []).forEach(function (it) {
-        var li = document.createElement('li');
-        li.textContent = it.label;
-        if (it.note) {
-          var s = document.createElement('small');
-          s.textContent = it.note;
-          li.appendChild(s);
-        }
-        ul.appendChild(li);
-      });
-      wrap.appendChild(ul);
-    });
-  }
-
   function enterUpload() {
     $('ctx-reference').textContent = 'Request ' + context.reference;
     $('ctx-org').textContent = context.orgName;
     $('ctx-purpose').textContent = context.purpose;
     $('ctx-instructions').textContent = context.instructions || '';
     $('ctx-instructions').hidden = !context.instructions;
-    renderChecklist(context.checklist);
     var lim = context.limits;
     $('limits-line').textContent = lim.allowedTypes.map(function (t) { return t.toUpperCase(); }).join(', ') +
       ' · up to ' + formatBytes(lim.maxFileBytes) + ' per file · ' + formatBytes(lim.maxTotalBytes) + ' total';
@@ -231,11 +204,40 @@
     }
     if (item.error) html += '<span class="portal-file-error"></span>';
     if (item.status === 'failed') html += '<span class="portal-file-actions"><button type="button" class="portal-link" data-retry>Retry</button></span>';
+    if (item.status !== 'rejected' && item.status !== 'closed') {
+      html += '<span class="portal-file-desc"><input type="text" class="portal-input portal-input-sm" maxlength="300" placeholder="Optional description (e.g. 2024 federal tax return)" data-desc>' +
+        '<button type="button" class="portal-link" data-save-desc hidden>Save</button><span class="portal-muted" data-desc-state></span></span>';
+    }
+    // Preserve the typed description across re-renders.
+    var prev = item.el.querySelector('[data-desc]');
+    if (prev) item.description = prev.value;
     item.el.innerHTML = html;
     item.el.querySelector('.portal-file-name').textContent = item.file.name;
     if (item.error) item.el.querySelector('.portal-file-error').textContent = item.error;
     var retry = item.el.querySelector('[data-retry]');
     if (retry) retry.addEventListener('click', function () { item.error = ''; item.progress = 0; startUpload(item); });
+    var desc = item.el.querySelector('[data-desc]');
+    if (desc) {
+      desc.value = item.description || '';
+      var save = item.el.querySelector('[data-save-desc]');
+      var state = item.el.querySelector('[data-desc-state]');
+      if (item.savedDescription !== undefined && item.savedDescription === (item.description || '') && item.description) state.textContent = 'Saved';
+      desc.addEventListener('input', function () {
+        item.description = desc.value;
+        if (item.status === 'received') { save.hidden = false; state.textContent = ''; }
+      });
+      desc.addEventListener('keydown', function (e) { if (e.key === 'Enter' && item.status === 'received') { e.preventDefault(); saveDescription(item, save, state); } });
+      save.addEventListener('click', function () { saveDescription(item, save, state); });
+    }
+  }
+
+  function saveDescription(item, saveBtn, stateEl) {
+    saveBtn.disabled = true;
+    api('describe', { body: { fileId: item.fileId, description: item.description || '' } }).then(function (r) {
+      saveBtn.disabled = false;
+      if (r.ok) { item.savedDescription = r.description; saveBtn.hidden = true; stateEl.textContent = r.description ? 'Saved' : ''; }
+      else stateEl.textContent = 'Could not save';
+    }).catch(function () { saveBtn.disabled = false; stateEl.textContent = 'Could not save'; });
   }
 
   function markClosed() {
@@ -318,10 +320,11 @@
   function finalize(item) {
     item.status = 'finalizing';
     renderItem(item);
-    api('finalize', { body: { fileId: item.fileId } }).then(function (r) {
+    api('finalize', { body: { fileId: item.fileId, description: item.description || '' } }).then(function (r) {
       if (r.closed) return markClosed();
       if (r.ok && r.status === 'received') {
         item.status = 'received';
+        item.savedDescription = item.description || '';
         received += 1;
         renderItem(item);
         updateSummary();
