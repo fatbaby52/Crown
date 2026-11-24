@@ -260,3 +260,42 @@ control (never a real client). Then verify:
   CSP restricting script sources. For stricter supply-chain control, vendor
   the two files into the repo and drop the CDN entries from the CSP.
 - **No automatic invites or reminders** in v1 by design; staff send links.
+
+## 8. Go-live checklist (status 2026-11-24)
+
+Done:
+- [x] Migrations applied to BidFuel; bucket `client-uploads` private, 25 MB, PDF/JPG/PNG only.
+- [x] `alex@crownconsultingteam.com` added to `portal_staff` (existing BidFuel auth user).
+- [x] Netlify env (crownconsulting site): `PORTAL_MODE=staff_only`, `PORTAL_ENV`, `PORTAL_SITE_URL`,
+      `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `PORTAL_BUCKET`, `EMAIL_PROVIDER=resend`,
+      `SCANNER_PROVIDER=none`, `PORTAL_FROM_EMAIL`, `PORTAL_RECEIPT_EMAIL`,
+      and secrets `PORTAL_IP_PEPPER`, `PORTAL_INTERNAL_SECRET` (production context).
+
+To do, in order:
+1. **Supabase dashboard (BidFuel)** → Authentication → Multi-Factor: enable TOTP.
+   Authentication → Users: make sure the alex@ user has a password you know
+   (Send password recovery if not).
+2. **Netlify UI** → Site configuration → Environment variables: add
+   `SUPABASE_SERVICE_ROLE_KEY` (from Supabase Project Settings → API keys),
+   scope *Functions*, mark **Secret**. Paste it there directly, never into chat
+   or the repo. Then Deploys → Trigger deploy so functions pick it up.
+   After this, `/portal/` sign-in + MFA enrolment works and you can create
+   draft requests.
+3. **Resend**: sign up, Domains → add `crownconsultingteam.com`, add the DKIM,
+   SPF-include and return-path records Resend shows into Squarespace DNS
+   (keep the existing Google Workspace MX and SPF entries; merge the SPF
+   include into the one existing `v=spf1` TXT record). Create an API key
+   (sending only) and add it in Netlify as `RESEND_API_KEY` (Secret).
+   Send yourself a test from Resend's dashboard first.
+4. **Scanner**: deploy `benzino77/clamav-rest-api` (or `ajilaag/clamav-rest`)
+   as a Railway/Fly service with 2 GB RAM, HTTPS, and a bearer token env.
+   Set `SCANNER_PROVIDER=clamav-rest`, `SCANNER_URL`, `SCANNER_TOKEN` (Secret)
+   in Netlify and redeploy. Until then every upload stays locked as
+   "scan failed", which is the intended fail-closed behaviour.
+5. **Staging**: push a `portal-staging` branch; in Netlify set branch-deploy
+   context overrides `PORTAL_MODE=live`, `PORTAL_ENV=staging`,
+   `PORTAL_SITE_URL=https://portal-staging--crownconsulting.netlify.app`.
+   Run section 6 there with two synthetic requests.
+6. **Approve** sender, scanner, retention days (`PORTAL_RETENTION_DAYS`,
+   default 90) and the access tests; then set production `PORTAL_MODE=live`
+   and redeploy. Send the first real invite.
