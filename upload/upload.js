@@ -119,6 +119,12 @@
 
   $('form-request').addEventListener('submit', function (e) { e.preventDefault(); sendCode(); });
   $('btn-resend').addEventListener('click', function () { sendCode(); });
+  $('btn-have-code').addEventListener('click', function () {
+    setError('err-verify', '');
+    show('verify');
+    $('code').value = '';
+    $('code').focus();
+  });
 
   $('form-verify').addEventListener('submit', function (e) {
     e.preventDefault();
