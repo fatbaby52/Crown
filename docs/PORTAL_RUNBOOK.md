@@ -24,7 +24,7 @@ sender, storage, scanner, retention policy and access tests listed at the end.
 | Daily housekeeping | `netlify/functions/portal-cleanup.js` (scheduled `@daily` in `netlify.toml`) |
 | Shared helpers | `netlify/functions/lib/*` |
 | Database + bucket | Supabase project **BidFuel** (`aaeudtfmjuuowvkexrfh`), tables `portal_*`, bucket `client-uploads` |
-| Migrations | `supabase/migrations/0001`–`0003` (all applied to BidFuel) |
+| Migrations | `supabase/migrations/0001`–`0004` (all applied to BidFuel) |
 | Tests | `npm test` (Node built-in runner, no database needed) |
 
 The portal shares the BidFuel Supabase project by decision of Crown (Nov 2026).
@@ -229,7 +229,7 @@ control (never a real client). Then verify:
    failure. Six wrong attempts → locked. Seven send requests in an hour → 429.
 4. Upload a PDF, a JPG, a PNG; watch progress; kill Wi-Fi mid-upload and
    reconnect (tus resumes); retry a failed file individually.
-5. Upload a 26 MB file → refused before upload. Rename `x.zip` to `x.pdf` →
+5. Upload a 51 MB file → refused before upload. Rename `x.zip` to `x.pdf` →
    accepted for upload but rejected at confirmation with the archive message.
    Password-protected PDF → rejected with the password message. A PNG renamed
    `.jpg` → rejected as a mismatch.
@@ -286,7 +286,7 @@ control (never a real client). Then verify:
 ## 8. Go-live checklist (status 2026-11-24)
 
 Done:
-- [x] Migrations applied to BidFuel; bucket `client-uploads` private, 25 MB, PDF/JPG/PNG only.
+- [x] Migrations applied to BidFuel; bucket `client-uploads` private, 50 MB per file (raised from 25 MB on 2026-11-24), PDF/JPG/PNG only.
 - [x] `alex@crownconsultingteam.com` added to `portal_staff`; TOTP enabled and enrolled; first sign-in verified.
 - [x] `SUPABASE_SERVICE_ROLE_KEY` set in Netlify (Secret); production redeployed and live endpoints checked.
 - [x] Netlify env (crownconsulting site): `PORTAL_MODE=staff_only`, `PORTAL_ENV`, `PORTAL_SITE_URL`,

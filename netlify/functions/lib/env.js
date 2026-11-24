@@ -55,7 +55,7 @@ function getEnv() {
     grantTtlSeconds: int('PORTAL_GRANT_TTL_SECONDS', 7200),
     maxGrantsPerSessionPerHour: int('PORTAL_MAX_GRANTS_PER_SESSION_PER_HOUR', 200),
 
-    defaultMaxFileBytes: int('PORTAL_MAX_FILE_BYTES', 25 * 1024 * 1024),
+    defaultMaxFileBytes: int('PORTAL_MAX_FILE_BYTES', 50 * 1024 * 1024),
     defaultMaxTotalBytes: int('PORTAL_MAX_TOTAL_BYTES', 250 * 1024 * 1024),
     defaultAllowedTypes: list('PORTAL_ALLOWED_TYPES', ['pdf', 'jpg', 'png']),
     defaultExpiryDays: int('PORTAL_DEFAULT_EXPIRY_DAYS', 7),

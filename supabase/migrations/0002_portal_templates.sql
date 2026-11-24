@@ -8,7 +8,7 @@ insert into portal_templates (slug, name, purpose, instructions, checklist) valu
   'nmsdc-mbe-certification',
   'NMSDC MBE certification intake',
   'NMSDC certification intake',
-  'Please upload the documents below as PDF, JPG or PNG (25 MB per file). Scans or clear phone photos are fine. If an item does not apply to your company, you can skip it; we will follow up on anything missing. Where a customer invoice is requested, please pair it with proof that it was paid (bank or card statement line, cancelled check, or remittance).',
+  'Please upload the documents below as PDF, JPG or PNG (50 MB per file). Scans or clear phone photos are fine. If an item does not apply to your company, you can skip it; we will follow up on anything missing. Where a customer invoice is requested, please pair it with proof that it was paid (bank or card statement line, cancelled check, or remittance).',
   '[
     {"group":"Ownership and governance","items":[
       {"label":"Articles of incorporation or organization (filed copy)","note":""},
@@ -51,7 +51,7 @@ insert into portal_templates (slug, name, purpose, instructions, checklist) valu
   'dbe-initial-screen',
   'DBE initial eligibility screen',
   'Initial DBE eligibility screening',
-  'This is an initial screen only, not the full DBE application. Please upload what you have for each item below as PDF, JPG or PNG (25 MB per file). We are not asking for a personal narrative at this stage. If something does not apply, skip it and we will follow up.',
+  'This is an initial screen only, not the full DBE application. Please upload what you have for each item below as PDF, JPG or PNG (50 MB per file). We are not asking for a personal narrative at this stage. If something does not apply, skip it and we will follow up.',
   '[
     {"group":"Ownership and governance","items":[
       {"label":"Articles of incorporation or organization and all amendments","note":""},
