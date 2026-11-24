@@ -52,6 +52,7 @@
     fetch(API + '/config').then(function (r) { return r.json(); }).then(function (cfg) {
       if (!cfg.supabaseUrl || !cfg.publishableKey) throw new Error('Portal is not configured (SUPABASE_URL / SUPABASE_PUBLISHABLE_KEY).');
       sb = window.supabase.createClient(cfg.supabaseUrl, cfg.publishableKey);
+      window.__portalScanner = cfg.scanner || 'none';
       return sb.auth.getSession();
     }).then(function (r) {
       if (r && r.data && r.data.session) return afterSignIn();
@@ -131,7 +132,7 @@
         return show('denied');
       }
       me = r;
-      $('me-line').textContent = r.email + (r.mode !== 'live' ? ' · client intake is ' + (r.mode === 'off' ? 'OFF' : 'not yet live') : '');
+      $('me-line').textContent = r.email + (r.mode !== 'live' ? ' · client intake is ' + (r.mode === 'off' ? 'OFF' : 'not yet live') : '') + (window.__portalScanner === 'endpoint-only' ? ' · no server-side virus scan: rely on your antivirus' : '');
       show('console');
       return Promise.all([api('templates'), loadRequests()]).then(function (res) {
         templates = res[0].templates || [];

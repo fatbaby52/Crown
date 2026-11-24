@@ -261,7 +261,7 @@ exports.handler = async function (event) {
 
   // Public, non-secret browser config for the staff console sign-in.
   if (method === 'GET' && route === 'config') {
-    return json(200, { ok: true, supabaseUrl: env.supabaseUrl, publishableKey: env.supabasePublishableKey, mode: env.mode });
+    return json(200, { ok: true, supabaseUrl: env.supabaseUrl, publishableKey: env.supabasePublishableKey, mode: env.mode, scanner: env.scannerProvider });
   }
 
   let db;
