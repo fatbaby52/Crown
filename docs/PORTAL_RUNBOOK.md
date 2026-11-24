@@ -262,6 +262,12 @@ control (never a real client). Then verify:
   spam filters; verify DKIM and warm the domain before real intake.
 - **Encrypted-PDF detection** is a signature check (`/Encrypt` in the first or
   last 4 KB). It catches standard writers; the scanner stage is the backstop.
+- **Resumable uploads are off.** On 2026-11-24 Supabase's TUS endpoint
+  rejected presigned (`x-signature`) uploads with "new row violates row-level
+  security policy" while the signed PUT succeeded, so `PORTAL_RESUMABLE_UPLOADS`
+  defaults to false and each file is one signed PUT with progress. An
+  interrupted 25 MB upload restarts from zero on retry. Re-test TUS later
+  (Supabase may fix it) before enabling the flag.
 - **Presigned upload tokens** live ~2 hours and cannot be revoked individually
   once issued; closing a request only prevents finalization. Objects uploaded
   late are unreadable and deleted nightly.

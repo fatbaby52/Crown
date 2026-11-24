@@ -266,8 +266,14 @@
         if (err && /409/.test(String(err))) item.error = 'This upload was already completed or its slot was used. Add the file again.';
         renderItem(item);
       };
-      if (window.tus && window.tus.isSupported) uploadTus(item, g.upload.tus, done, fail);
-      else uploadPut(item, g.upload.put, done, fail);
+      // Resumable uploads only when the server offers them and the library loaded;
+      // otherwise a single signed PUT with progress. If the resumable path
+      // fails before any bytes are accepted, fall back to the PUT once.
+      if (g.upload.tus && window.tus && window.tus.isSupported) {
+        uploadTus(item, g.upload.tus, done, function () { uploadPut(item, g.upload.put, done, fail); });
+      } else {
+        uploadPut(item, g.upload.put, done, fail);
+      }
     }).catch(function () {
       item.status = 'failed';
       item.error = 'Network error. Please retry.';

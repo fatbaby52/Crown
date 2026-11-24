@@ -227,8 +227,13 @@ test('grant: requires session + CSRF, enforces type/size/quota, scopes object ke
   state.usedBytes = 0;
   r = parse(await portal.handler(ev('POST', 'grant', { filename: 'Tax.PDF', size: 10, mime: 'application/pdf' }, H)));
   assert.equal(r.status, 200);
-  assert.equal(r.body.upload.tus.headers['x-upsert'], 'false');
-  assert.equal(r.body.upload.tus.headers['x-signature'], 'tok');
+  assert.equal(r.body.upload.tus, null, 'resumable path is off by default');
+  assert.ok(r.body.upload.put.url.includes('token=tok'));
+  process.env.PORTAL_RESUMABLE_UPLOADS = 'true';
+  const r2 = parse(await portal.handler(ev('POST', 'grant', { filename: 'Tax2.PDF', size: 10, mime: 'application/pdf' }, H)));
+  assert.equal(r2.body.upload.tus.headers['x-upsert'], 'false');
+  assert.equal(r2.body.upload.tus.headers['x-signature'], 'tok');
+  process.env.PORTAL_RESUMABLE_UPLOADS = 'false';
   const file = state.tables.portal_files.find((f) => f.id === r.body.fileId);
   assert.ok(file.object_key.startsWith('requests/req1/'), 'object key is server-chosen under the request');
   assert.equal(file.status, 'reserved');

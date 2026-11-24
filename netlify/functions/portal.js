@@ -220,12 +220,12 @@ async function handleGrant(db, env, event, body) {
     fileId: inserted.id,
     expiresAt: grantExpires,
     upload: {
-      tus: {
+      tus: env.resumableUploads ? {
         endpoint: `${storageHost}/storage/v1/upload/resumable`,
         headers,
         metadata: { bucketName: env.bucket, objectName: objectKey, contentType: mimeForExtension(check.extension), cacheControl: '3600' },
         chunkSize: 6 * 1024 * 1024,
-      },
+      } : null,
       put: { url: signed.signedUrl, contentType: mimeForExtension(check.extension) },
     },
   });

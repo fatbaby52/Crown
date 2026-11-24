@@ -62,6 +62,10 @@ function getEnv() {
     retentionDays: int('PORTAL_RETENTION_DAYS', 90),
     orphanGraceHours: int('PORTAL_ORPHAN_GRACE_HOURS', 24),
     downloadUrlSeconds: int('PORTAL_DOWNLOAD_URL_SECONDS', 60),
+    // Supabase's TUS endpoint rejects presigned tokens with an RLS error on
+    // this project (verified 2026-11-24), so resumable uploads are off unless
+    // explicitly enabled after re-testing. The signed PUT path always works.
+    resumableUploads: (process.env.PORTAL_RESUMABLE_UPLOADS || 'false').toLowerCase() === 'true',
   };
 }
 
