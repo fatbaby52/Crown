@@ -299,3 +299,10 @@ To do, in order:
 6. **Approve** sender, scanner, retention days (`PORTAL_RETENTION_DAYS`,
    default 90) and the access tests; then set production `PORTAL_MODE=live`
    and redeploy. Send the first real invite.
+
+### DNS note (2026-11-24)
+When adding Resend's records, Squarespace reported a conflict: `send.crownconsultingteam.com`
+already existed as a CNAME to `send.forge.rmta.net`. `rmta.net` is Resend's own
+mail-server domain (see https://rmta.net), i.e. the CNAME was Resend's alternative
+return-path format from an earlier add-domain attempt. It was replaced with the
+MX + TXT form Resend showed. Both forms are Resend's; nothing unrelated was removed.
