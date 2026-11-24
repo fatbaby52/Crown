@@ -65,6 +65,7 @@ function fileView(f) {
     uploadedAt: f.uploaded_at,
     scannedAt: f.scanned_at,
     scanProvider: f.scan_provider,
+    serverScanned: f.status === 'clean' && !(f.scan_result && f.scan_result.serverScan === false),
     scanAttempts: f.scan_attempts,
     createdAt: f.created_at,
     deletedAt: f.deleted_at,

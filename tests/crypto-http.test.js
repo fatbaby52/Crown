@@ -2,7 +2,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const { randomToken, sha256, hashIp, generateOtp, safeEqualHex, generateReference } = require('../netlify/functions/lib/crypto');
 const { parseCookies, cookieHeader, originAllowed, routeOf, parseBody } = require('../netlify/functions/lib/http');
-const { interpretClamResponse } = require('../netlify/functions/lib/scanner');
+const { interpretClamResponse, scanBytes } = require('../netlify/functions/lib/scanner');
 const { otpMessage, receiptMessage } = require('../netlify/functions/lib/email');
 
 test('tokens and hashes', () => {
@@ -79,4 +79,15 @@ test('emails never include filenames or tokens', () => {
   assert.ok(r.subject.includes('CR-2026-ABCDE'));
   assert.ok(r.text.includes('2 new files'));
   assert.ok(!/\.pdf|\.png|\.jpg/i.test(r.text));
+});
+
+test('scanner providers fail closed except the explicit endpoint-only decision', async () => {
+  const base = { scannerUrl: '', scannerToken: '', deployEnv: 'production' };
+  assert.equal((await scanBytes({ ...base, scannerProvider: 'none' }, Buffer.alloc(1), 'x')).verdict, 'error');
+  assert.equal((await scanBytes({ ...base, scannerProvider: 'staging-stub' }, Buffer.alloc(1), 'x')).verdict, 'error');
+  assert.equal((await scanBytes({ ...base, scannerProvider: 'staging-stub', deployEnv: 'staging' }, Buffer.alloc(1), 'x')).verdict, 'clean');
+  assert.equal((await scanBytes({ ...base, scannerProvider: 'clamav-rest' }, Buffer.alloc(1), 'x')).verdict, 'error');
+  const ep = await scanBytes({ ...base, scannerProvider: 'endpoint-only' }, null, '');
+  assert.equal(ep.verdict, 'clean');
+  assert.equal(ep.detail.serverScan, false);
 });

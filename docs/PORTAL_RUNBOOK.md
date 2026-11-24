@@ -121,23 +121,31 @@ in the browser; it is public by design).
 For local development only, `EMAIL_PROVIDER=console` prints codes to the
 function log. The code refuses that provider when `PORTAL_MODE=live`.
 
-### 3.3 Malware scanner
+### 3.3 Malware scanning: Crown's decision
 
-The portal never sends files to a public scanning service. Options:
+**Decision (Alex, 2026-11-24): no server-side scanner. `SCANNER_PROVIDER=endpoint-only`.**
+Files are released to staff as soon as the signature/size checks pass, without a
+malware scan on the server. The control is endpoint antivirus (Windows Defender
+or equivalent, kept current) on every machine that downloads portal files. The
+portal makes this visible rather than hiding it:
 
-- **`clamav-rest`** (recommended): run a private ClamAV REST container
-  (e.g. `benzino77/clamav-rest-api` or `ajilaag/clamav-rest`) on Railway, Fly
-  or a small VM, behind HTTPS with a bearer token. Set `SCANNER_PROVIDER=clamav-rest`,
-  `SCANNER_URL=https://…`, `SCANNER_TOKEN=…`. The adapter understands both
-  images' JSON shapes (`lib/scanner.js`).
-- **`none`** (default): every file ends `scan_failed` and stays locked. Safe
-  but useless for real intake.
-- **`staging-stub`**: marks files clean without scanning. Honoured only when
-  `PORTAL_ENV=staging`; refused everywhere else. Use it to exercise the
-  download path in staging before the real scanner exists.
+- the staff console labels such files **"released, not scanned"** instead of "cleared";
+- `portal_files.scan_result` stores `{"serverScan": false, ...}` and the audit
+  trail records `scan_clean` with provider `endpoint-only`;
+- client-facing copy says files are "held for review", not "virus scanned".
 
-Netlify background functions can run 15 minutes and have ~1 GB memory; a
-25 MB file is comfortably within that.
+Handling rules for staff under this decision:
+1. Download only onto a machine with real-time antivirus enabled and updated.
+2. Open PDFs in a viewer with JavaScript disabled or in the browser's viewer,
+   never in a tool that executes embedded content; treat images as images.
+3. If anything looks wrong (unexpected prompts, macros, odd file sizes), delete
+   the file in the console and tell the client to resend a flat scan.
+
+To add a real scanner later, set `SCANNER_PROVIDER=clamav-rest` with
+`SCANNER_URL`/`SCANNER_TOKEN` pointing at a private ClamAV REST container, or
+ask for a commercial-API adapter (OPSWAT MetaDefender, Cloudmersive). The
+other providers remain: `none` (everything stays locked) and `staging-stub`
+(staging only). Switching providers needs only an env change and redeploy.
 
 ### 3.4 Netlify environment variables
 
@@ -152,7 +160,7 @@ UI (Site configuration → Environment variables), marking secrets as *secret*:
 | `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, `SUPABASE_PUBLISHABLE_KEY` | BidFuel | BidFuel (same project; staging data is synthetic) |
 | `PORTAL_IP_PEPPER`, `PORTAL_INTERNAL_SECRET` | `openssl rand -base64 32` each | different values |
 | `EMAIL_PROVIDER`, `RESEND_API_KEY`, `PORTAL_FROM_EMAIL`, `PORTAL_RECEIPT_EMAIL` | Resend | Resend (or `console`) |
-| `SCANNER_PROVIDER`, `SCANNER_URL`, `SCANNER_TOKEN` | `clamav-rest` | `clamav-rest` or `staging-stub` |
+| `SCANNER_PROVIDER` | `endpoint-only` (Crown's decision) | `endpoint-only` or `staging-stub` |
 
 Because staging and production share one Supabase project, use a dedicated
 Netlify **branch deploy** (e.g. branch `portal-staging`) with its own env
@@ -230,16 +238,20 @@ control (never a real client). Then verify:
 8. Staff without MFA (fresh user, skipped TOTP): `/api/staff/*` returns
    `mfa_required`; the console forces enrolment. A user not in `portal_staff`
    sees "Not authorized".
-9. With `SCANNER_PROVIDER=none`, files stay `scan failed` and Download never
-   appears. Switch to the real scanner (or `staging-stub` in staging), rescan,
-   download, then delete the file and confirm the object is gone.
+9. Files show "released, not scanned" and Download appears once the
+   signature checks pass. Download one, confirm your antivirus sees it, then
+   delete the file in the console and confirm the object is gone from the
+   bucket.
 10. Confirm the receipt email names only the reference and counts.
 
 ## 7. Remaining configuration and known risks
 
-- **Not yet done**: Resend domain + keys, scanner deployment, Netlify env vars,
-  staff users + MFA enrolment, staging branch deploy, running the acceptance
-  script above, retention approval.
+- **No server-side malware scan** (Crown's decision, 2026-11-24): a malicious
+  file reaches a staff machine before anything inspects it. Mitigated only by
+  endpoint antivirus and the handling rules in 3.3. Revisit if the portal
+  starts taking files from clients Crown does not already know.
+- **Not yet done**: Resend verification + key, staging branch deploy, running
+  the acceptance script above, retention approval.
 - **Shared Supabase project**: the portal lives in BidFuel by Crown's choice.
   Isolation relies on RLS-without-policies plus revoked grants; anyone with
   BidFuel's service key or dashboard access can read portal data. Treat
@@ -265,7 +277,8 @@ control (never a real client). Then verify:
 
 Done:
 - [x] Migrations applied to BidFuel; bucket `client-uploads` private, 25 MB, PDF/JPG/PNG only.
-- [x] `alex@crownconsultingteam.com` added to `portal_staff` (existing BidFuel auth user).
+- [x] `alex@crownconsultingteam.com` added to `portal_staff`; TOTP enabled and enrolled; first sign-in verified.
+- [x] `SUPABASE_SERVICE_ROLE_KEY` set in Netlify (Secret); production redeployed and live endpoints checked.
 - [x] Netlify env (crownconsulting site): `PORTAL_MODE=staff_only`, `PORTAL_ENV`, `PORTAL_SITE_URL`,
       `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `PORTAL_BUCKET`, `EMAIL_PROVIDER=resend`,
       `SCANNER_PROVIDER=none`, `PORTAL_FROM_EMAIL`, `PORTAL_RECEIPT_EMAIL`,
@@ -287,11 +300,8 @@ To do, in order:
    include into the one existing `v=spf1` TXT record). Create an API key
    (sending only) and add it in Netlify as `RESEND_API_KEY` (Secret).
    Send yourself a test from Resend's dashboard first.
-4. **Scanner**: deploy `benzino77/clamav-rest-api` (or `ajilaag/clamav-rest`)
-   as a Railway/Fly service with 2 GB RAM, HTTPS, and a bearer token env.
-   Set `SCANNER_PROVIDER=clamav-rest`, `SCANNER_URL`, `SCANNER_TOKEN` (Secret)
-   in Netlify and redeploy. Until then every upload stays locked as
-   "scan failed", which is the intended fail-closed behaviour.
+4. **Scanner**: decided 2026-11-24, `SCANNER_PROVIDER=endpoint-only` (no server
+   scan; see 3.3). Nothing to deploy.
 5. **Staging**: push a `portal-staging` branch; in Netlify set branch-deploy
    context overrides `PORTAL_MODE=live`, `PORTAL_ENV=staging`,
    `PORTAL_SITE_URL=https://portal-staging--crownconsulting.netlify.app`.

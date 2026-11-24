@@ -28,7 +28,10 @@ exports.handler = async function (event) {
   await db.from('portal_files').update({ scan_attempts: (file.scan_attempts || 0) + 1, scan_provider: env.scannerProvider }).eq('id', file.id);
 
   let result;
-  try {
+  if (env.scannerProvider === 'endpoint-only') {
+    // No bytes are inspected; record the decision explicitly.
+    result = await scanBytes(env, null, '');
+  } else try {
     const { data: blob, error } = await db.storage.from(env.bucket).download(file.object_key);
     if (error || !blob) throw new Error(error ? error.message : 'download returned nothing');
     const bytes = Buffer.from(await blob.arrayBuffer());

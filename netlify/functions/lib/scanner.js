@@ -9,6 +9,10 @@
 //                    common response shapes used by clamav-rest images.
 //   staging-stub  -> marks files clean WITHOUT scanning. Honoured only when
 //                    PORTAL_ENV=staging; anywhere else it behaves like 'none'.
+//   endpoint-only -> Crown's explicit decision (Nov 2026) to rely on endpoint
+//                    antivirus on staff machines instead of a server-side scan.
+//                    Files are released unscanned; the verdict detail and the
+//                    audit trail say so, and the staff console labels them.
 
 function interpretClamResponse(body) {
   // Shape A (benzino77/clamav-rest-api): { success, data: { result: [{ name, is_infected, viruses }] } }
@@ -59,6 +63,8 @@ async function scanBytes(env, bytes, safeName) {
     case 'staging-stub':
       if (env.deployEnv === 'staging') return { verdict: 'clean', detail: { stub: true } };
       return { verdict: 'error', detail: { reason: 'staging-stub refused outside staging' } };
+    case 'endpoint-only':
+      return { verdict: 'clean', detail: { serverScan: false, note: 'Released without server-side malware scan; endpoint antivirus is the control.' } };
     case 'none':
     default:
       return { verdict: 'error', detail: { reason: 'no scanner configured' } };

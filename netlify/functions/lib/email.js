@@ -57,7 +57,7 @@ function receiptMessage({ reference, orgName, newFiles, totalFiles }) {
     `Request ${reference} (${orgName}) received ${newFiles} new file${newFiles === 1 ? '' : 's'}.`,
     `Total files on this request: ${totalFiles}.`,
     '',
-    'Files are scanned before release. Sign in to the staff console to review and download cleared files.',
+    'Files are checked before release. Sign in to the staff console to review and download them.',
   ].join('\n');
   return { subject, text, html: `<pre style="font-family:Inter,Arial,sans-serif;white-space:pre-wrap">${escapeHtml(text)}</pre>` };
 }

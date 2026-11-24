@@ -321,7 +321,7 @@
     $('d-files-empty').hidden = !!(r.files && r.files.length);
     (r.files || []).forEach(function (f) {
       var tr = document.createElement('tr');
-      var statusLabel = { pending_scan: 'scanning', clean: 'cleared', scan_failed: 'scan failed', infected: 'blocked (malware)', rejected: 'rejected' + (f.rejectionReason ? ': ' + f.rejectionReason : ''), deleted: 'deleted' }[f.status] || f.status;
+      var statusLabel = { pending_scan: 'scanning', clean: f.serverScanned ? 'cleared' : 'released, not scanned', scan_failed: 'scan failed', infected: 'blocked (malware)', rejected: 'rejected' + (f.rejectionReason ? ': ' + f.rejectionReason : ''), deleted: 'deleted' }[f.status] || f.status;
       tr.innerHTML = '<td class="name"></td><td>' + fmtBytes(f.size) + '</td><td>' + esc(fmtDate(f.uploadedAt)) + '</td>' +
         '<td><span class="staff-pill ' + esc(f.status) + '">' + esc(statusLabel) + '</span></td><td class="staff-row"></td>';
       tr.querySelector('.name').textContent = f.originalName;
