@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Staff Console | Crown Consulting Team</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/upload/portal.css">
+</head>
+<body class="portal-body">
+  <nav class="page-nav">
+    <a href="/" class="nav-logo">
+      <img src="/Crown_Logo-removebg-preview.png" alt="Crown Consulting Team" class="nav-logo-img">
+    </a>
+    <div class="nav-links">
+      <span class="portal-nav-tag">Staff console</span>
+      <button type="button" class="portal-link" id="btn-signout" hidden>Sign out</button>
+    </div>
+  </nav>
+
+  <main id="main" class="portal-main staff-main">
+    <!-- Sign in -->
+    <section class="portal-card" id="view-signin" hidden>
+      <p class="portal-eyebrow">Crown staff only</p>
+      <h1 class="portal-title">Sign in</h1>
+      <form id="form-signin" class="portal-form">
+        <label class="portal-label" for="si-email">Email</label>
+        <input id="si-email" class="portal-input" type="email" autocomplete="username" required>
+        <label class="portal-label" for="si-password">Password</label>
+        <input id="si-password" class="portal-input" type="password" autocomplete="current-password" required>
+        <button type="submit" class="cta-button portal-btn">Continue</button>
+      </form>
+      <p class="portal-error" id="err-signin" role="alert" hidden></p>
+    </section>
+
+    <!-- MFA enrol -->
+    <section class="portal-card" id="view-enrol" hidden>
+      <p class="portal-eyebrow">One-time setup</p>
+      <h1 class="portal-title">Set up your authenticator</h1>
+      <p class="portal-text">Scan this code with an authenticator app (1Password, Google Authenticator, Authy), then enter the 6-digit code it shows.</p>
+      <div class="staff-qr"><img id="enrol-qr" alt="Authenticator QR code"></div>
+      <p class="portal-muted">Can’t scan? Enter this key manually: <span class="staff-secret" id="enrol-secret"></span></p>
+      <form id="form-enrol" class="portal-form">
+        <label class="portal-label" for="enrol-code">Code from your app</label>
+        <input id="enrol-code" class="portal-input portal-code" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" required>
+        <button type="submit" class="cta-button portal-btn">Verify and finish</button>
+      </form>
+      <p class="portal-error" id="err-enrol" role="alert" hidden></p>
+    </section>
+
+    <!-- MFA challenge -->
+    <section class="portal-card" id="view-mfa" hidden>
+      <p class="portal-eyebrow">Second factor</p>
+      <h1 class="portal-title">Enter your authenticator code</h1>
+      <form id="form-mfa" class="portal-form">
+        <label class="portal-label" for="mfa-code">6-digit code</label>
+        <input id="mfa-code" class="portal-input portal-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" required autofocus>
+        <button type="submit" class="cta-button portal-btn">Continue</button>
+      </form>
+      <p class="portal-error" id="err-mfa" role="alert" hidden></p>
+    </section>
+
+    <!-- Not authorised -->
+    <section class="portal-card" id="view-denied" hidden>
+      <h1 class="portal-title">Not authorized</h1>
+      <p class="portal-text" id="denied-text">This account is not on the portal staff list.</p>
+    </section>
+
+    <!-- Console -->
+    <section id="view-console" hidden>
+      <div class="staff-header">
+        <div>
+          <p class="portal-eyebrow">Client uploads</p>
+          <h1 class="portal-title">File requests</h1>
+        </div>
+        <div class="staff-row">
+          <span class="portal-muted" id="me-line"></span>
+          <button type="button" class="cta-button portal-btn portal-btn-sm" id="btn-new">New request</button>
+        </div>
+      </div>
+      <p class="portal-error" id="err-console" role="alert" hidden></p>
+      <p class="portal-success" id="ok-console" role="status" hidden></p>
+
+      <div class="staff-grid">
+        <aside class="staff-card">
+          <h2>Requests</h2>
+          <ul class="staff-list" id="request-list"></ul>
+        </aside>
+
+        <section class="staff-card" id="detail-panel">
+          <p class="portal-muted" id="detail-empty">Select a request, or create a new one.</p>
+
+          <!-- New / edit form -->
+          <form id="form-request" hidden>
+            <h2 id="form-title">New request</h2>
+            <div class="staff-field">
+              <label class="portal-label" for="f-template">Start from template</label>
+              <select id="f-template" class="portal-input"><option value="">Blank</option></select>
+            </div>
+            <div class="staff-field">
+              <label class="portal-label" for="f-org">Organization</label>
+              <input id="f-org" class="portal-input" required maxlength="200">
+            </div>
+            <div class="staff-field">
+              <label class="portal-label" for="f-purpose">Purpose (shown to the client)</label>
+              <input id="f-purpose" class="portal-input" required maxlength="200">
+            </div>
+            <div class="staff-field">
+              <label class="portal-label" for="f-email">Authorized recipient email (one address)</label>
+              <input id="f-email" class="portal-input" type="email" required>
+            </div>
+            <div class="staff-field">
+              <label class="portal-label" for="f-expiry">Link valid for (days)</label>
+              <input id="f-expiry" class="portal-input" type="number" min="1" max="60" value="7">
+            </div>
+            <div class="staff-field">
+              <label class="portal-label" for="f-instructions">Instructions</label>
+              <textarea id="f-instructions" class="portal-input" maxlength="4000"></textarea>
+            </div>
+            <div class="staff-field">
+              <span class="portal-label">Checklist (one item per line; add “ — note” after an item for a hint)</span>
+              <div class="checklist-editor" id="checklist-editor"></div>
+              <div><button type="button" class="portal-link" id="btn-add-group">Add a group</button></div>
+            </div>
+            <p class="portal-muted">Review the checklist carefully before issuing the link. Templates are starting points, not approved final lists.</p>
+            <div class="staff-row" style="margin-top:1rem">
+              <button type="submit" class="cta-button portal-btn portal-btn-sm">Save draft</button>
+              <button type="button" class="cta-button portal-btn portal-btn-sm portal-btn-secondary" id="btn-cancel-form">Cancel</button>
+            </div>
+          </form>
+
+          <!-- Detail -->
+          <div id="detail" hidden>
+            <div class="staff-header">
+              <div>
+                <p class="portal-eyebrow" id="d-ref"></p>
+                <h2 class="portal-title" style="font-size:1.6rem" id="d-org"></h2>
+              </div>
+              <span class="staff-pill" id="d-status"></span>
+            </div>
+            <dl class="staff-kv">
+              <dt>Purpose</dt><dd id="d-purpose"></dd>
+              <dt>Recipient</dt><dd id="d-email"></dd>
+              <dt>Expires</dt><dd id="d-expires"></dd>
+              <dt>Created</dt><dd id="d-created"></dd>
+            </dl>
+            <div class="staff-row" id="d-actions"></div>
+            <div class="staff-invite" id="d-invite" hidden></div>
+
+            <h2 style="margin-top:1.5rem">Files</h2>
+            <table class="staff-table">
+              <thead><tr><th>Name</th><th>Size</th><th>Received</th><th>Status</th><th></th></tr></thead>
+              <tbody id="d-files"></tbody>
+            </table>
+            <p class="portal-muted" id="d-files-empty">No files received yet.</p>
+
+            <h2 style="margin-top:1.5rem">Activity</h2>
+            <ul class="staff-audit" id="d-audit"></ul>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer portal-footer">
+    <p class="footer-legal">Internal tool. Files are confidential client records: download only what you need, and delete when no longer required.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js" crossorigin="anonymous"></script>
+  <script src="/portal/staff.js"></script>
+</body>
+</html>

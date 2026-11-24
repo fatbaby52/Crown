@@ -3,6 +3,9 @@
 
 User-agent: *
 Allow: /
+Disallow: /upload/
+Disallow: /portal/
+Disallow: /api/
 
 # AI / LLM crawlers (explicitly welcome)
 User-agent: GPTBot

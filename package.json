@@ -1,0 +1,13 @@
+{
+  "name": "crown-consulting-site",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Crown Consulting Team site, AI assistant function, and client upload portal",
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\"",
+    "dev": "netlify dev"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.49.0"
+  }
+}

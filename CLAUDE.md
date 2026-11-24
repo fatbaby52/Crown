@@ -101,3 +101,12 @@ All SEO pages include: navigation bar, AI search bar, page content, CTA section,
 - Legal work is performed under a separate written engagement by an attorney or law firm of the client's choice. Do not name the Law Office of Alex Craig, the Law Office of Tony Carlos, or any other specific firm on the site (removed Oct 2026), and never steer or promise a referral.
 - Every page footer carries the `.footer-legal` notice; keep it on new pages. The AI system prompt in `netlify/functions/chat.js` carries the same rule.
 - Background: Cal. Rules of Professional Conduct 5.4, 7.1–7.3, 7.5, 1.7, 1.8.1; State Bar Formal Opn. 1995-141; Bus. & Prof. Code § 6155.
+
+## Client Upload Portal (added Nov 2026)
+Private file-request portal: staff issue a one-recipient link, client verifies with an email code, uploads PDF/JPG/PNG straight to private Supabase storage, files are scanned before staff can download. Full design, setup and acceptance script: `docs/PORTAL_RUNBOOK.md`.
+- Pages: `/upload/` (client, no analytics, noindex) and `/portal/` (staff console, Supabase Auth + TOTP MFA). Both styled by `upload/portal.css` on top of `styles.css`.
+- Functions: `netlify/functions/portal.js` (`/api/portal/*`), `staff.js` (`/api/staff/*`), `portal-scan-background.js`, `portal-cleanup.js` (scheduled daily). Shared code in `netlify/functions/lib/`.
+- Data: Supabase project **BidFuel** (`aaeudtfmjuuowvkexrfh`), tables `portal_*` (RLS on, no policies, service role only), private bucket `client-uploads`. Migrations in `supabase/migrations/` are applied.
+- Config: see `.env.example`. `PORTAL_MODE` is the kill switch (`off` / `staff_only` / `live`). Client intake stays `staff_only` in production until Crown approves sender, scanner, retention and access tests.
+- Tests: `npm test` (Node test runner, no DB). Keep handler tests green when touching the functions.
+- Never hard-code client names, emails or documents in the repo, seeds, tests or logs. Receipt emails carry only the case reference and file counts.

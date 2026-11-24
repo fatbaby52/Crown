@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Document Upload | Crown Consulting Team</title>
+  <meta name="robots" content="noindex, nofollow, noarchive">
+  <meta name="referrer" content="no-referrer">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/upload/portal.css">
+</head>
+<body class="portal-body">
+  <a href="#main" class="skip-link">Skip to main content</a>
+
+  <nav class="page-nav">
+    <a href="/" class="nav-logo">
+      <img src="/Crown_Logo-removebg-preview.png" alt="Crown Consulting Team" class="nav-logo-img">
+    </a>
+    <div class="nav-links">
+      <span class="portal-nav-tag">Secure upload</span>
+    </div>
+  </nav>
+
+  <main id="main" class="portal-main">
+    <!-- Loading -->
+    <section class="portal-card" id="view-loading" hidden>
+      <p class="portal-muted">Checking your link…</p>
+    </section>
+
+    <!-- Invalid / closed link -->
+    <section class="portal-card" id="view-invalid" hidden>
+      <h1 class="portal-title">This link isn’t active</h1>
+      <p class="portal-text">The upload link you opened is invalid, has expired, or has been closed. If you still need to send documents, reply to the Crown Consulting team member who sent you the link and ask for a new one.</p>
+    </section>
+
+    <!-- Unavailable (portal off) -->
+    <section class="portal-card" id="view-unavailable" hidden>
+      <h1 class="portal-title">Uploads are paused</h1>
+      <p class="portal-text">The secure upload service is temporarily unavailable. Please try again later or contact your Crown Consulting team member.</p>
+    </section>
+
+    <!-- Step 1: request a code -->
+    <section class="portal-card" id="view-request" hidden>
+      <p class="portal-eyebrow">Step 1 of 2</p>
+      <h1 class="portal-title">Verify it’s you</h1>
+      <p class="portal-text">This upload link was issued to <strong id="email-hint">your work email</strong>. We’ll send a one-time code to that address. Nothing else is required: no account, no password.</p>
+      <form id="form-request" class="portal-form">
+        <button type="submit" class="cta-button portal-btn" id="btn-send">Email me a code</button>
+      </form>
+      <p class="portal-error" id="err-request" role="alert" hidden></p>
+    </section>
+
+    <!-- Step 2: enter the code -->
+    <section class="portal-card" id="view-verify" hidden>
+      <p class="portal-eyebrow">Step 2 of 2</p>
+      <h1 class="portal-title">Enter your code</h1>
+      <p class="portal-text">We sent a 6-digit code to <strong id="email-hint-2"></strong>. It expires in 10 minutes. Check your spam folder if you don’t see it within a minute.</p>
+      <form id="form-verify" class="portal-form">
+        <label class="portal-label" for="code">Verification code</label>
+        <input id="code" name="code" class="portal-input portal-code" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6}" maxlength="6" placeholder="••••••" required autofocus>
+        <button type="submit" class="cta-button portal-btn" id="btn-verify">Continue</button>
+      </form>
+      <p class="portal-error" id="err-verify" role="alert" hidden></p>
+      <p class="portal-muted"><button type="button" class="portal-link" id="btn-resend">Send a new code</button> <span id="resend-timer"></span></p>
+    </section>
+
+    <!-- Upload -->
+    <section class="portal-card portal-card-wide" id="view-upload" hidden>
+      <p class="portal-eyebrow" id="ctx-reference"></p>
+      <h1 class="portal-title" id="ctx-org"></h1>
+      <p class="portal-text" id="ctx-purpose"></p>
+      <p class="portal-text" id="ctx-instructions"></p>
+
+      <details class="portal-checklist" id="checklist-wrap" open>
+        <summary>What to upload</summary>
+        <div id="checklist"></div>
+      </details>
+
+      <div class="portal-dropzone" id="dropzone" tabindex="0" role="button" aria-label="Choose files to upload">
+        <input type="file" id="file-input" multiple accept=".pdf,.jpg,.jpeg,.png,application/pdf,image/jpeg,image/png" hidden>
+        <p class="portal-drop-title">Drop files here or <span class="portal-link-text">choose files</span></p>
+        <p class="portal-muted" id="limits-line"></p>
+      </div>
+
+      <ul class="portal-files" id="file-list" aria-live="polite"></ul>
+
+      <div class="portal-summary" id="summary" hidden>
+        <p class="portal-text" id="summary-line"></p>
+        <p class="portal-muted">Received files are held for review and virus scanning by Crown Consulting. Receiving a file does not mean your packet is complete or that any application has been filed. You can come back to this link and verify again to send more until the request is closed.</p>
+      </div>
+
+      <p class="portal-error" id="err-upload" role="alert" hidden></p>
+      <p class="portal-muted portal-footer-actions"><button type="button" class="portal-link" id="btn-logout">I’m finished for now</button></p>
+    </section>
+
+    <!-- Closed mid-session -->
+    <section class="portal-card" id="view-closed" hidden>
+      <h1 class="portal-title">This request is closed</h1>
+      <p class="portal-text">Crown Consulting has closed this upload request, so no further files are being accepted. Files that were already received remain with Crown for review. If you need to send more, ask your Crown Consulting team member for a new link.</p>
+    </section>
+
+    <!-- Finished -->
+    <section class="portal-card" id="view-done" hidden>
+      <h1 class="portal-title">Thank you</h1>
+      <p class="portal-text" id="done-line"></p>
+      <p class="portal-muted">You can close this page. To send more documents later, open your link again and request a new code.</p>
+    </section>
+  </main>
+
+  <footer class="footer portal-footer">
+    <p class="footer-bottom">Crown Consulting Team · <a href="tel:8312622847">(831) 262-2847</a> · California</p>
+    <p class="footer-legal">Crown Consulting Team is a business consulting firm, not a law firm. Crown does not provide legal services or legal advice, and working with Crown does not create an attorney-client relationship. Any legal work is performed under a separate written engagement by an attorney or law firm of your choice.</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/tus-js-client@4.3.1/dist/tus.min.js" crossorigin="anonymous"></script>
+  <script src="/upload/upload.js"></script>
+</body>
+</html>

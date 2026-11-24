@@ -5,9 +5,61 @@
 [functions]
   node_bundler = "esbuild"
 
+# Daily housekeeping for the upload portal (expiry, orphan cleanup, retention).
+[functions."portal-cleanup"]
+  schedule = "@daily"
+
+# ---------------------------------------------------------------------------
+# Upload portal API routes
+# ---------------------------------------------------------------------------
+[[redirects]]
+  from = "/api/portal/*"
+  to = "/.netlify/functions/portal/:splat"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/staff/*"
+  to = "/.netlify/functions/staff/:splat"
+  status = 200
+  force = true
+
 [[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
+
+# Client upload page: no caching, no referrer leakage, tight CSP.
+[[headers]]
+  for = "/upload/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://*.storage.supabase.co; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+
+# Staff console: same, plus Supabase Auth.
+[[headers]]
+  for = "/portal/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    Referrer-Policy = "no-referrer"
+    X-Robots-Tag = "noindex, nofollow, noarchive"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://*.supabase.co https://*.storage.supabase.co; frame-ancestors 'none'; base-uri 'none'; form-action 'self'"
+
+[[headers]]
+  for = "/api/*"
+  [headers.values]
+    Cache-Control = "no-store"
+    X-Robots-Tag = "noindex"
+
+# Local `netlify dev` defaults (non-secret). Real keys come from .env.
+[context.dev.environment]
+  PORTAL_MODE = "live"
+  PORTAL_ENV = "staging"
+  PORTAL_SITE_URL = "http://localhost:8888"
+  EMAIL_PROVIDER = "console"
+  SCANNER_PROVIDER = "staging-stub"
