@@ -270,7 +270,7 @@ control (never a real client). Then verify:
   rejected presigned (`x-signature`) uploads with "new row violates row-level
   security policy" while the signed PUT succeeded, so `PORTAL_RESUMABLE_UPLOADS`
   defaults to false and each file is one signed PUT with progress. An
-  interrupted 25 MB upload restarts from zero on retry. Re-test TUS later
+  interrupted 50 MB upload restarts from zero on retry. Re-test TUS later
   (Supabase may fix it) before enabling the flag.
 - **Presigned upload tokens** live ~2 hours and cannot be revoked individually
   once issued; closing a request only prevents finalization. Objects uploaded
